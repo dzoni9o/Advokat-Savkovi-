@@ -1,0 +1,66 @@
+---
+import Field from './Field.astro';
+
+interface Column {
+  eyebrow: string;
+  heading: string;
+  paragraphs: string[];
+  facts?: { label: string; value: string }[];
+}
+
+interface Props {
+  about: {
+    eyebrow: string;
+    titleBefore: string;
+    titleEm: string;
+    columns: Column[];
+  };
+}
+
+const { about } = Astro.props;
+const [left, right] = about.columns;
+---
+<section class="slab about" id="kabinet">
+  <svg class="tex" viewBox="0 0 1400 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="1000" fill="#2A1D12" />
+    <rect width="1400" height="1000" fill="#1C1309" opacity="0.55" />
+    <rect width="1400" height="1000" filter="url(#grain)" opacity="0.55" />
+  </svg>
+  <div class="vignette"></div>
+
+  <div class="inner">
+    <div class="head">
+      <div class="eyebrow">{about.eyebrow}</div>
+      <h2>{about.titleBefore}<i>{about.titleEm}</i></h2>
+    </div>
+
+    <div class="panel framed">
+      <div>
+        <div class="eyebrow">{left.eyebrow}</div>
+        <h3><Field value={left.heading} /></h3>
+        {left.paragraphs.map((text) => <p><Field value={text} /></p>)}
+      </div>
+
+      <div class="divider-v" aria-hidden="true"></div>
+
+      <div>
+        <div class="eyebrow">{right.eyebrow}</div>
+        <h3><Field value={right.heading} /></h3>
+        {right.paragraphs.map((text) => <p><Field value={text} /></p>)}
+
+        {
+          right.facts && (
+            <dl class="facts">
+              {right.facts.map((fact) => (
+                <div>
+                  <dt>{fact.label}</dt>
+                  <dd><Field value={fact.value} /></dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>

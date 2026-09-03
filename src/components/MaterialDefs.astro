@@ -1,0 +1,82 @@
+---
+// Shared SVG filter definitions for the marble, wood and gold surfaces.
+// Rendered once per page; the section components reference them by id.
+//
+// Marble note: the steep alpha slope in each feColorMatrix (a large
+// multiplier against a large negative offset) keeps only the top of the
+// turbulence range, so veins read as thin filaments. A gentle slope
+// produces soft cloud, which looks like smoke rather than stone.
+---
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="veinDark" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.024" numOctaves="5" seed="17" result="t" />
+      <feColorMatrix
+        in="t"
+        type="matrix"
+        values="0 0 0 0 0.60
+                0 0 0 0 0.53
+                0 0 0 0 0.39
+                9.0 0 0 0 -5.10"
+      />
+    </filter>
+
+    <filter id="veinDarkFine" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.05" numOctaves="3" seed="41" result="t" />
+      <feColorMatrix
+        in="t"
+        type="matrix"
+        values="0 0 0 0 0.85
+                0 0 0 0 0.76
+                0 0 0 0 0.55
+                12.0 0 0 0 -7.60"
+      />
+    </filter>
+
+    <filter id="veinCream" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.026" numOctaves="5" seed="5" result="t" />
+      <feColorMatrix
+        in="t"
+        type="matrix"
+        values="0 0 0 0 0.49
+                0 0 0 0 0.45
+                0 0 0 0 0.39
+                8.5 0 0 0 -4.80"
+      />
+    </filter>
+
+    <filter id="veinCreamFine" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.010 0.055" numOctaves="3" seed="29" result="t" />
+      <feColorMatrix
+        in="t"
+        type="matrix"
+        values="0 0 0 0 0.32
+                0 0 0 0 0.29
+                0 0 0 0 0.24
+                12.0 0 0 0 -7.40"
+      />
+    </filter>
+
+    <!-- Wood: high frequency across, low along, giving directional grain -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="4" seed="23" result="t" />
+      <feColorMatrix
+        in="t"
+        type="matrix"
+        values="0 0 0 0 0.10
+                0 0 0 0 0.06
+                0 0 0 0 0.03
+                1.5 0 0 0 -0.45"
+      />
+    </filter>
+
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6E5220" />
+      <stop offset="0.22" stop-color="#D4AF37" />
+      <stop offset="0.40" stop-color="#F7ECC0" />
+      <stop offset="0.58" stop-color="#C9A227" />
+      <stop offset="0.78" stop-color="#F0DFA0" />
+      <stop offset="1" stop-color="#7A5C24" />
+    </linearGradient>
+  </defs>
+</svg>

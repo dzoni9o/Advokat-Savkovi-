@@ -1,0 +1,49 @@
+---
+interface Props {
+  initials: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  detailed?: boolean;
+}
+
+const { initials, width = 86, height = 104, class: className = '', detailed = true } = Astro.props;
+---
+<svg
+  class={className}
+  width={width}
+  height={height}
+  viewBox="0 0 86 104"
+  role="img"
+  aria-label={`Grb — ${initials}`}
+>
+  <path
+    d="M43 3 L81 17 V52 C81 76 63 92 43 101 C23 92 5 76 5 52 V17 Z"
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="1.6"
+  />
+  {detailed && (
+    <path
+      d="M43 10 L75 21 V52 C75 72 60 86 43 94 C26 86 11 72 11 52 V21 Z"
+      fill="rgba(212,175,55,0.06)"
+      stroke="rgba(212,175,55,0.35)"
+      stroke-width="0.8"
+    />
+  )}
+  <text
+    x="43"
+    y="60"
+    text-anchor="middle"
+    font-family="Cinzel, serif"
+    font-size="28"
+    font-weight="600"
+    fill="url(#goldGrad)"
+    letter-spacing="1">{initials}</text>
+  {detailed && (
+    <>
+      <path d="M28 70 H58" stroke="url(#goldGrad)" stroke-width="1" />
+      <path d="M43 74 l4 4 -4 4 -4 -4 Z" fill="url(#goldGrad)" />
+    </>
+  )}
+</svg>

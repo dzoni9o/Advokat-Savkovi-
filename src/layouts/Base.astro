@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+import MaterialDefs from '../components/MaterialDefs.astro';
+import { LOCALES, LOCALE_HREFLANG, isComplete, countTodos, isTodo, type Locale } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+  content: any;
+}
+
+const { locale, content } = Astro.props;
+const { meta } = content;
+
+const site = Astro.site ?? new URL('https://savkovic-advokat.rs');
+const canonical = new URL(`/${locale}/`, site);
+
+// While any field is still unfilled the page carries a real person's name
+// beside placeholder credentials, so it must not be indexed.
+const complete = isComplete(content);
+const todos = countTodos(content);
+
+// Structured data is emitted only from fields that are actually filled —
+// never from placeholders.
+const address = content.contact.coords.find((c: any) => c.label.match(/Kancelarija|Канцеларија|Office/));
+const streetLine = address?.lines?.[0];
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Attorney',
+  name: content.hero.fullName,
+  url: canonical.href,
+  areaServed: 'Kruševac, Srbija',
+};
+if (streetLine && !isTodo(streetLine)) {
+  jsonLd.address = {
+    '@type': 'PostalAddress',
+    streetAddress: streetLine,
+    addressLocality: 'Kruševac',
+    addressCountry: 'RS',
+  };
+}
+---
+<!doctype html>
+<html lang={meta.lang} dir={meta.dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+    <link rel="canonical" href={canonical.href} />
+
+    {!complete && <meta name="robots" content="noindex, nofollow" />}
+
+    {
+      LOCALES.map((code) => (
+        <link rel="alternate" hreflang={LOCALE_HREFLANG[code]} href={new URL(`/${code}/`, site).href} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL('/sr/', site).href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:locale" content={meta.ogLocale} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Cinzel:wght@400..700&family=Jost:wght@300;400;500&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+
+  <body>
+    <MaterialDefs />
+    <slot />
+
+    {
+      !complete && (
+        <aside class="build-note" role="status">
+          <strong>{todos}</strong> nepopunjenih polja · stranica nosi <code>noindex</code> ·
+          popuniti iz <code>SADRZAJ-UPITNIK.md</code>
+        </aside>
+      )
+    }
+
+    <style>
+      .build-note {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        z-index: 200;
+        max-width: min(92vw, 460px);
+        padding: 10px 14px;
+        background: rgba(16, 12, 8, 0.94);
+        border: 1px dashed rgba(212, 175, 55, 0.6);
+        color: rgba(212, 175, 55, 0.9);
+        font-family: 'Jost', system-ui, sans-serif;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        line-height: 1.6;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      }
+      .build-note strong { color: #f7ecc0; font-weight: 500; }
+      .build-note code { font-family: ui-monospace, monospace; text-transform: none; letter-spacing: 0; }
+      @media print { .build-note { display: none; } }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+---
+interface Props {
+  practice: {
+    eyebrow: string;
+    titleBefore: string;
+    titleEm: string;
+    items: { numeral: string; name: string; desc: string; lex: string }[];
+  };
+}
+
+const { practice } = Astro.props;
+---
+<section class="slab practice" id="praksa">
+  <svg class="tex" viewBox="0 0 1400 1100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="1100" fill="#15100B" />
+    <rect width="1400" height="1100" filter="url(#veinDark)" opacity="0.62" />
+    <rect width="1400" height="1100" filter="url(#veinDarkFine)" opacity="0.26" />
+  </svg>
+  <div class="vignette"></div>
+
+  <div class="inner">
+    <div class="head">
+      <div class="eyebrow">{practice.eyebrow}</div>
+      <h2>{practice.titleBefore}<i>{practice.titleEm}</i></h2>
+    </div>
+
+    <div class="tiles">
+      {
+        practice.items.map((item) => (
+          <article class="tile">
+            <div class="numeral gilt">{item.numeral}</div>
+            <h3>{item.name}</h3>
+            <p>{item.desc}</p>
+            <div class="lex">{item.lex}</div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

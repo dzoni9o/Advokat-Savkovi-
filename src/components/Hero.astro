@@ -1,0 +1,49 @@
+---
+import Nav from './Nav.astro';
+import Crest from './Crest.astro';
+import Field from './Field.astro';
+import type { Locale } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+  nav: { monogram: string; links: { href: string; label: string }[] };
+  hero: {
+    crestInitials: string;
+    name: string;
+    tagline: string;
+    facts: { label: string; value: string }[];
+  };
+}
+
+const { locale, nav, hero } = Astro.props;
+---
+<header class="slab hero">
+  <svg class="tex" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="900" fill="#15100B" />
+    <rect width="1400" height="900" filter="url(#veinDark)" opacity="0.70" />
+    <rect width="1400" height="900" filter="url(#veinDarkFine)" opacity="0.30" />
+  </svg>
+  <div class="vignette"></div>
+
+  <Nav locale={locale} nav={nav} />
+
+  <div class="inner plaque">
+    <Crest initials={hero.crestInitials} class="crest" />
+
+    <h1 class="gilt">{hero.name}</h1>
+    <p class="sub"><Field value={hero.tagline} /></p>
+
+    <div class="ornament"><span class="lozenge"></span></div>
+
+    <div class="est">
+      {
+        hero.facts.map((fact) => (
+          <div>
+            {fact.label}
+            <b><Field value={fact.value} /></b>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</header>

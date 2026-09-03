@@ -1,0 +1,112 @@
+{
+  "_note": "Values beginning with 'TODO:' render as a visibly empty field, never as text. Replace them from the completed client questionnaire.",
+
+  "meta": {
+    "lang": "en",
+    "dir": "ltr",
+    "title": "Lazar Savković — Attorney at Law, Kruševac",
+    "description": "Law office of Lazar Savković in Kruševac, Serbia. Representation of companies and individuals before the courts of the Republic of Serbia.",
+    "locale": "en",
+    "ogLocale": "en_GB"
+  },
+
+  "nav": {
+    "monogram": "LS",
+    "links": [
+      { "href": "#kabinet", "label": "Chambers" },
+      { "href": "#praksa", "label": "Practice" },
+      { "href": "#kontakt", "label": "Contact" }
+    ]
+  },
+
+  "hero": {
+    "crestInitials": "LS",
+    "name": "Savković",
+    "fullName": "Lazar Savković",
+    "tagline": "TODO: one sentence — what the office does and since when",
+    "facts": [
+      { "label": "Bar registry", "value": "TODO: registry number" },
+      { "label": "Admitted", "value": "TODO: year" },
+      { "label": "Practice areas", "value": "TODO: count" },
+      { "label": "Working languages", "value": "TODO: languages" }
+    ]
+  },
+
+  "band": "TODO: one line — practice and office address",
+
+  "manifest": {
+    "eyebrow": "Principle of the office",
+    "quoteBefore": "TODO: the office's guiding sentence — factual, ",
+    "emphasis": "no",
+    "quoteAfter": " promised outcomes and no superlatives (Bar Code of Ethics, art. 23).",
+    "attrib": "Lazar Savković · Attorney at Law"
+  },
+
+  "about": {
+    "eyebrow": "Chambers",
+    "titleBefore": "A law office in ",
+    "titleEm": "Kruševac",
+    "columns": [
+      {
+        "eyebrow": "How the work is done",
+        "heading": "TODO: heading — how a matter is handled",
+        "paragraphs": [
+          "TODO: first paragraph — what working with the client looks like.",
+          "TODO: second paragraph — communication and case management.",
+          "TODO: third paragraph — privilege and confidentiality."
+        ]
+      },
+      {
+        "eyebrow": "Biography",
+        "heading": "TODO: heading — education and start of practice",
+        "paragraphs": [
+          "TODO: short biography, three to five sentences."
+        ],
+        "facts": [
+          { "label": "Law degree", "value": "TODO: year" },
+          { "label": "Bar examination", "value": "TODO: year" },
+          { "label": "Attorney examination", "value": "TODO: year" },
+          { "label": "Bar registry", "value": "TODO: registry number" },
+          { "label": "Working languages", "value": "TODO: languages" }
+        ]
+      }
+    ]
+  },
+
+  "practice": {
+    "_status": "PROPOSED — common areas, pending client confirmation.",
+    "eyebrow": "Practice areas",
+    "titleBefore": "Areas of ",
+    "titleEm": "regular practice",
+    "items": [
+      { "numeral": "I", "name": "Corporate law", "desc": "Incorporation and corporate changes, commercial contracts, commercial disputes, liquidation.", "lex": "Companies Act" },
+      { "numeral": "II", "name": "Criminal law", "desc": "Defence during investigation and trial, representation of injured parties, criminal complaints, appeals.", "lex": "Criminal Code · CPC" },
+      { "numeral": "III", "name": "Inheritance law", "desc": "Probate proceedings, wills, separation from the estate, disputes among heirs.", "lex": "Inheritance Act" },
+      { "numeral": "IV", "name": "Family law", "desc": "Divorce, parental rights, maintenance, matrimonial property.", "lex": "Family Act" },
+      { "numeral": "V", "name": "Employment law", "desc": "Employment disputes, termination, workplace harassment, collective agreements.", "lex": "Labour Act" },
+      { "numeral": "VI", "name": "Real property", "desc": "Sale and purchase, land registry, gift deeds, life-maintenance contracts, building land.", "lex": "Property Act" },
+      { "numeral": "VII", "name": "Contract law", "desc": "Contracts, damages, debtor–creditor relations, enforcement proceedings.", "lex": "Obligations Act" },
+      { "numeral": "VIII", "name": "Administrative law", "desc": "Proceedings before administrative bodies, administrative disputes, public procurement, tax matters.", "lex": "Administrative Procedure Act" }
+    ]
+  },
+
+  "contact": {
+    "heading": "Contact",
+    "lede": "TODO: one sentence about booking a first consultation",
+    "cta": "Request a consultation",
+    "coords": [
+      { "label": "Office", "lines": ["TODO: street and number", "TODO: postal code, Kruševac, Serbia"] },
+      { "label": "Telephone", "lines": ["TODO: phone"], "tel": null },
+      { "label": "Email", "lines": ["TODO: email address"], "email": null },
+      { "label": "Office hours", "lines": ["TODO: office hours"] }
+    ]
+  },
+
+  "footer": {
+    "left": "Bar Association",
+    "leftEm": "TODO: bar and registry number",
+    "centerBefore": "Anno ",
+    "centerEm": "TODO: year admitted",
+    "right": "In accordance with the Bar Code of Professional Ethics"
+  }
+}

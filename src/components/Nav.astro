@@ -1,0 +1,32 @@
+---
+import { LOCALES, LOCALE_LABELS, type Locale } from '../lib/content';
+
+interface Props {
+  locale: Locale;
+  nav: { monogram: string; links: { href: string; label: string }[] };
+}
+
+const { locale, nav } = Astro.props;
+---
+<nav class="site-nav">
+  <div class="links">
+    {nav.links.map((link) => <a href={link.href}>{link.label}</a>)}
+  </div>
+
+  <div class="mono gilt">{nav.monogram.split('').join(' ')}</div>
+
+  <div class="lang">
+    {
+      LOCALES.map((code, i) => (
+        <>
+          {i > 0 && <span class="sep">·</span>}
+          {code === locale ? (
+            <span class="on" aria-current="true">{LOCALE_LABELS[code]}</span>
+          ) : (
+            <a href={`/${code}/`} hreflang={code}>{LOCALE_LABELS[code]}</a>
+          )}
+        </>
+      ))
+    }
+  </div>
+</nav>

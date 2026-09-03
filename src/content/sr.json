@@ -1,0 +1,112 @@
+{
+  "_uputstvo": "Vrednosti koje počinju sa 'TODO:' renderuju se na sajtu kao vidljivo prazno polje, a ne kao tekst. Zamenite ih podacima iz popunjenog SADRZAJ-UPITNIK.md. Ništa se ne objavljuje dok klijent ne potvrdi.",
+
+  "meta": {
+    "lang": "sr-Latn-RS",
+    "dir": "ltr",
+    "title": "Lazar Savković — advokat, Kruševac",
+    "description": "Advokatska kancelarija Lazara Savkovića u Kruševcu. Zastupanje pravnih i fizičkih lica pred sudovima Republike Srbije.",
+    "locale": "sr",
+    "ogLocale": "sr_RS"
+  },
+
+  "nav": {
+    "monogram": "LS",
+    "links": [
+      { "href": "#kabinet", "label": "Kabinet" },
+      { "href": "#praksa", "label": "Praksa" },
+      { "href": "#kontakt", "label": "Kontakt" }
+    ]
+  },
+
+  "hero": {
+    "crestInitials": "LS",
+    "name": "Savković",
+    "fullName": "Lazar Savković",
+    "tagline": "TODO: jedna rečenica — čime se kancelarija bavi i od kada radi",
+    "facts": [
+      { "label": "Imenik AK", "value": "TODO: broj upisa" },
+      { "label": "Godina upisa", "value": "TODO: godina" },
+      { "label": "Oblasti prakse", "value": "TODO: broj oblasti" },
+      { "label": "Radni jezici", "value": "TODO: jezici" }
+    ]
+  },
+
+  "band": "TODO: jedan red — delatnost i adresa kancelarije",
+
+  "manifest": {
+    "eyebrow": "Načelo kancelarije",
+    "quoteBefore": "TODO: načelo kancelarije — jedna rečenica, ",
+    "emphasis": "bez",
+    "quoteAfter": " obećanja ishoda i bez superlativa (Kodeks prof. etike, čl. 23).",
+    "attrib": "Lazar Savković · advokat"
+  },
+
+  "about": {
+    "eyebrow": "Kabinet",
+    "titleBefore": "Advokatska kancelarija u ",
+    "titleEm": "Kruševcu",
+    "columns": [
+      {
+        "eyebrow": "Način rada",
+        "heading": "TODO: naslov — kako se vodi predmet",
+        "paragraphs": [
+          "TODO: prvi pasus — kako izgleda rad sa klijentom.",
+          "TODO: drugi pasus — komunikacija i vođenje predmeta.",
+          "TODO: treći pasus — advokatska tajna i poverljivost."
+        ]
+      },
+      {
+        "eyebrow": "Biografija",
+        "heading": "TODO: naslov — obrazovanje i početak prakse",
+        "paragraphs": [
+          "TODO: kratka biografija, tri do pet rečenica."
+        ],
+        "facts": [
+          { "label": "Pravni fakultet", "value": "TODO: godina" },
+          { "label": "Pravosudni ispit", "value": "TODO: godina" },
+          { "label": "Advokatski ispit", "value": "TODO: godina" },
+          { "label": "Imenik AK", "value": "TODO: broj upisa" },
+          { "label": "Radni jezici", "value": "TODO: jezici" }
+        ]
+      }
+    ]
+  },
+
+  "practice": {
+    "_status": "PREDLOG — uobičajene oblasti, čeka potvrdu klijenta. Obrisati sve čime se ne bavi.",
+    "eyebrow": "Oblasti prakse",
+    "titleBefore": "Oblasti ",
+    "titleEm": "redovnog postupanja",
+    "items": [
+      { "numeral": "I", "name": "Privredno pravo", "desc": "Osnivanje i statusne promene privrednih društava, ugovori u privredi, privredni sporovi, likvidacija.", "lex": "Zakon o privrednim društvima" },
+      { "numeral": "II", "name": "Krivično pravo", "desc": "Odbrana u istrazi i pred sudom, zastupanje oštećenih, krivične prijave, žalbeni postupak.", "lex": "Krivični zakonik · ZKP" },
+      { "numeral": "III", "name": "Nasledno pravo", "desc": "Ostavinski postupci, testamenti, izdvajanje iz zaostavštine, sporovi među naslednicima.", "lex": "Zakon o nasleđivanju" },
+      { "numeral": "IV", "name": "Porodično pravo", "desc": "Razvod braka, vršenje roditeljskog prava, izdržavanje, imovinski odnosi supružnika.", "lex": "Porodični zakon" },
+      { "numeral": "V", "name": "Radno pravo", "desc": "Sporovi iz radnog odnosa, otkazi ugovora o radu, mobing, kolektivni ugovori.", "lex": "Zakon o radu" },
+      { "numeral": "VI", "name": "Nepokretnosti", "desc": "Kupoprodaja, uknjižba, ugovor o poklonu, doživotno izdržavanje, građevinsko zemljište.", "lex": "ZOSPO · ZDKZ" },
+      { "numeral": "VII", "name": "Obligaciono pravo", "desc": "Ugovori, naknada štete, dužničko-poverilački odnosi, izvršni postupak.", "lex": "ZOO · ZIO" },
+      { "numeral": "VIII", "name": "Upravno pravo", "desc": "Postupci pred organima uprave, upravni sporovi, javne nabavke, poreske stvari.", "lex": "ZUP · ZUS" }
+    ]
+  },
+
+  "contact": {
+    "heading": "Kontakt",
+    "lede": "TODO: jedna rečenica o zakazivanju prvog razgovora",
+    "cta": "Zakažite konsultaciju",
+    "coords": [
+      { "label": "Kancelarija", "lines": ["TODO: ulica i broj", "TODO: poštanski broj, Kruševac"] },
+      { "label": "Telefon", "lines": ["TODO: telefon"], "tel": null },
+      { "label": "Elektronska pošta", "lines": ["TODO: e-adresa"], "email": null },
+      { "label": "Radno vreme", "lines": ["TODO: radno vreme"] }
+    ]
+  },
+
+  "footer": {
+    "left": "Advokatska komora",
+    "leftEm": "TODO: komora i broj",
+    "centerBefore": "Anno ",
+    "centerEm": "TODO: godina upisa",
+    "right": "U skladu sa Kodeksom profesionalne etike advokata"
+  }
+}

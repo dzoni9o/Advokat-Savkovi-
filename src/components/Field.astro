@@ -1,0 +1,19 @@
+---
+import { isTodo, todoHint } from '../lib/content';
+
+interface Props {
+  value: unknown;
+  /** Rendered inside the placeholder chip; defaults to the TODO hint. */
+  hint?: string;
+}
+
+const { value, hint } = Astro.props;
+const unfilled = isTodo(value);
+---
+{
+  unfilled ? (
+    <span class="todo" data-unfilled>{hint ?? todoHint(value as string)}</span>
+  ) : (
+    <>{value}</>
+  )
+}

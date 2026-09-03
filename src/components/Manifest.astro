@@ -1,0 +1,34 @@
+---
+import Field from './Field.astro';
+
+interface Props {
+  band: string;
+  manifest: {
+    eyebrow: string;
+    quoteBefore: string;
+    emphasis: string;
+    quoteAfter: string;
+    attrib: string;
+  };
+}
+
+const { band, manifest } = Astro.props;
+---
+<div class="band"><span><Field value={band} /></span></div>
+
+<section class="slab manifest">
+  <svg class="tex" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="700" fill="#EDE6DA" />
+    <rect width="1400" height="700" filter="url(#veinCream)" opacity="0.70" />
+    <rect width="1400" height="700" filter="url(#veinCreamFine)" opacity="0.28" />
+  </svg>
+
+  <div class="inner">
+    <div class="eyebrow">{manifest.eyebrow}</div>
+    <p class="quote">
+      <Field value={manifest.quoteBefore} /><b>{manifest.emphasis}</b>{manifest.quoteAfter}
+    </p>
+    <div class="ornament"><span class="lozenge"></span></div>
+    <p class="attrib">{manifest.attrib}</p>
+  </div>
+</section>

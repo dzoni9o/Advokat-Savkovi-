@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import Manifest from '../../components/Manifest.astro';
+import About from '../../components/About.astro';
+import Practice from '../../components/Practice.astro';
+import Contact from '../../components/Contact.astro';
+import { getContent } from '../../lib/content';
+
+const locale = 'en' as const;
+const c = getContent(locale);
+---
+<Base locale={locale} content={c}>
+  <Hero locale={locale} nav={c.nav} hero={c.hero} />
+  <Manifest band={c.band} manifest={c.manifest} />
+  <About about={c.about} />
+  <Practice practice={c.practice} />
+  <Contact crestInitials={c.hero.crestInitials} contact={c.contact} footer={c.footer} />
+</Base>

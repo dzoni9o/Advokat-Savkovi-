@@ -1,0 +1,90 @@
+---
+import Crest from './Crest.astro';
+import Field from './Field.astro';
+import { isTodo } from '../lib/content';
+
+interface Coord {
+  label: string;
+  lines: string[];
+  tel?: string | null;
+  email?: string | null;
+}
+
+interface Props {
+  crestInitials: string;
+  contact: {
+    heading: string;
+    lede: string;
+    cta: string;
+    coords: Coord[];
+  };
+  footer: {
+    left: string;
+    leftEm: string;
+    centerBefore: string;
+    centerEm: string;
+    right: string;
+  };
+}
+
+const { crestInitials, contact, footer } = Astro.props;
+
+// The call to action only becomes a real mailto: once an address exists.
+// Until then it renders inert rather than pointing at nothing.
+const ctaEmail = contact.coords.find((c) => c.email)?.email ?? null;
+---
+<section class="slab contact" id="kontakt">
+  <svg class="tex" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="900" fill="#100C08" />
+    <rect width="1400" height="900" filter="url(#veinDark)" opacity="0.62" />
+  </svg>
+  <div class="vignette"></div>
+
+  <div class="inner">
+    <div class="vault framed">
+      <div>
+        <Crest initials={crestInitials} width={58} height={70} class="crest-sm" detailed={false} />
+        <h2 class="gilt">{contact.heading}</h2>
+        <p class="lede"><Field value={contact.lede} /></p>
+
+        {
+          ctaEmail ? (
+            <a class="cta" href={`mailto:${ctaEmail}`}>{contact.cta}</a>
+          ) : (
+            <span class="cta" aria-disabled="true" title="Čeka e-adresu klijenta">{contact.cta}</span>
+          )
+        }
+      </div>
+
+      <dl class="coords">
+        {
+          contact.coords.map((coord) => (
+            <div>
+              <dt>{coord.label}</dt>
+              <dd>
+                {coord.tel && !isTodo(coord.tel) ? (
+                  <a href={`tel:${coord.tel.replace(/[^\d+]/g, '')}`}>{coord.lines[0]}</a>
+                ) : coord.email && !isTodo(coord.email) ? (
+                  <a href={`mailto:${coord.email}`}>{coord.lines[0]}</a>
+                ) : (
+                  coord.lines.map((line, i) => (
+                    <>
+                      {i > 0 && <br />}
+                      <Field value={line} />
+                    </>
+                  ))
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <footer class="site-footer">
+      <div>{footer.left} · <b><Field value={footer.leftEm} /></b></div>
+      <div class="c">{footer.centerBefore}<b><Field value={footer.centerEm} /></b></div>
+      <div class="r">{footer.right}</div>
+    </footer>
+  </div>
+</section>
