@@ -1,0 +1,708 @@
+<title>Kabinet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Cinzel:wght@400..700&family=Jost:wght@300;400;500&display=swap">
+<style>
+  :root {
+    --espresso:    #100C08;
+    --marble-dark: #1A1410;
+    --marble-mid:  #241C15;
+    --wood:        #2A1D12;
+    --wood-deep:   #1C1309;
+    --cream:       #EDE6DA;
+    --cream-warm:  #E4DACA;
+    --ivory:       #EDE4D3;
+    --ivory-soft:  #C4B9A4;
+    --ivory-mute:  #8A7F6C;
+
+    --gold-deep:   #6E5220;
+    --gold:        #D4AF37;
+    --gold-light:  #F7ECC0;
+    --gold-mid:    #B08A2E;
+
+    --gold-ramp: linear-gradient(135deg,
+      #6E5220 0%, #A87F26 12%, #D4AF37 26%, #F7ECC0 38%,
+      #E2C566 48%, #B08A2E 62%, #F0DFA0 76%, #8A6A26 90%, #6E5220 100%);
+    --gold-rule: linear-gradient(90deg,
+      rgba(110,82,32,0) 0%, #8A6A26 12%, #D4AF37 30%, #F7ECC0 50%,
+      #D4AF37 70%, #8A6A26 88%, rgba(110,82,32,0) 100%);
+
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--espresso);
+    color: var(--ivory);
+    font-family: 'Jost', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--gold); color: var(--espresso); }
+  a { color: inherit; text-decoration: none; }
+
+  /* ---------- Material primitives ---------- */
+  .slab { position: relative; overflow: hidden; }
+  .tex {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 30%, rgba(8,5,3,0.55) 78%, rgba(8,5,3,0.88) 100%);
+  }
+  .inner { position: relative; z-index: 2; }
+
+  /* Gold text */
+  .gilt {
+    background: var(--gold-ramp);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 1px 0 rgba(0,0,0,0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  }
+  /* Gold hairline rule */
+  .rule-gold { height: 1px; background: var(--gold-rule); border: 0; }
+
+  /* Inset gold frame */
+  .framed {
+    border: 1px solid rgba(212,175,55,0.42);
+    box-shadow:
+      inset 0 0 0 1px rgba(247,236,192,0.10),
+      inset 0 0 60px rgba(0,0,0,0.55),
+      0 24px 60px rgba(0,0,0,0.5);
+  }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* Ornament: gold diamond between two rules */
+  .ornament {
+    display: flex; align-items: center; gap: 16px;
+    justify-content: center;
+  }
+  .ornament::before, .ornament::after {
+    content: ''; height: 1px; flex: 1; max-width: 160px;
+    background: var(--gold-rule);
+  }
+  .ornament .lozenge {
+    width: 9px; height: 9px;
+    background: var(--gold-ramp);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px rgba(212,175,55,0.5);
+  }
+
+  /* ---------- Top bar ---------- */
+  nav {
+    position: absolute; top: 0; left: 0; right: 0; z-index: 40;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 28px clamp(20px, 4vw, 56px);
+  }
+  nav .links { display: flex; gap: 34px; }
+  nav a, nav .lang span {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ivory-soft);
+    transition: color .25s;
+  }
+  nav a:hover { color: var(--gold-light); }
+  nav .mono {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.36em;
+    text-indent: 0.36em;
+  }
+  nav .lang { justify-self: end; display: flex; gap: 10px; align-items: center; }
+  nav .lang .on { color: var(--gold); }
+  nav .lang .sep { color: rgba(212,175,55,0.35); }
+
+  /* ---------- HERO ---------- */
+  .hero { min-height: 92vh; display: flex; align-items: center; justify-content: center; padding: 130px 20px 90px; }
+  .hero .plaque {
+    position: relative;
+    max-width: 1080px; width: 100%;
+    padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+    text-align: center;
+    border: 1px solid rgba(212,175,55,0.34);
+    box-shadow:
+      inset 0 0 0 1px rgba(0,0,0,0.6),
+      inset 0 0 0 9px rgba(212,175,55,0.10),
+      inset 0 0 120px rgba(0,0,0,0.6),
+      0 40px 100px rgba(0,0,0,0.65);
+    background: linear-gradient(180deg, rgba(36,28,21,0.30) 0%, rgba(10,7,4,0.42) 100%);
+    backdrop-filter: blur(1px);
+  }
+  .hero .crest { margin: 0 auto 34px; display: block; }
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: clamp(46px, 8.4vw, 132px);
+    line-height: 1.02;
+    letter-spacing: 0.06em;
+    text-indent: 0.06em;
+    margin-bottom: 26px;
+  }
+  .hero .sub {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 72;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(19px, 2.3vw, 30px);
+    line-height: 1.45;
+    color: var(--ivory);
+    max-width: 34ch; margin: 0 auto 34px;
+  }
+  .hero .est {
+    display: flex; justify-content: center; gap: clamp(20px, 4vw, 56px);
+    flex-wrap: wrap;
+    margin-top: 30px; padding-top: 26px;
+    border-top: 1px solid rgba(212,175,55,0.22);
+  }
+  .hero .est div {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--ivory-mute);
+  }
+  .hero .est div b {
+    display: block; margin-top: 7px;
+    font-family: 'Cinzel', serif; font-weight: 600;
+    font-size: 15px; letter-spacing: 0.16em;
+    color: var(--gold);
+  }
+
+  /* ---------- Gold band ---------- */
+  .band {
+    position: relative;
+    background: var(--gold-ramp);
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -2px 6px rgba(0,0,0,0.35), 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .band span {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.4em; text-transform: uppercase;
+    color: #2A1D06;
+  }
+
+  /* ---------- Manifest (cream marble) ---------- */
+  .manifest { padding: clamp(90px, 12vh, 150px) 20px; }
+  .manifest .inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+  .manifest .quote {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 96;
+    font-style: italic; font-weight: 400;
+    font-size: clamp(27px, 4vw, 56px);
+    line-height: 1.24;
+    color: #1C1710;
+    margin: 34px auto;
+    max-width: 22ch;
+  }
+  .manifest .quote b { font-weight: 600; font-style: italic; color: #6E5220; }
+  .manifest .attrib {
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase;
+    color: #6A5F4C;
+  }
+  .manifest .eyebrow { color: #7A5C24; }
+  .manifest .ornament::before, .manifest .ornament::after {
+    background: linear-gradient(90deg, rgba(110,82,32,0) 0%, #B08A2E 40%, #6E5220 100%);
+  }
+  .manifest .ornament::after { transform: scaleX(-1); }
+
+  /* ---------- About (wood panel) ---------- */
+  .about { padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 56px); }
+  .about .inner { max-width: 1280px; margin: 0 auto; }
+  .about .head { text-align: center; margin-bottom: 60px; }
+  .about h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 96;
+    font-weight: 500;
+    font-size: clamp(38px, 5.4vw, 78px);
+    line-height: 1.06; letter-spacing: -0.005em;
+    margin: 22px 0 0;
+  }
+  .about h2 i { font-style: italic; }
+  .panel {
+    display: grid;
+    grid-template-columns: 1.15fr 1px 1fr;
+    gap: clamp(30px, 4vw, 64px);
+    padding: clamp(32px, 4.5vw, 64px);
+    background: linear-gradient(165deg, rgba(58,40,24,0.55) 0%, rgba(18,12,7,0.72) 100%);
+  }
+  .panel .divider-v { background: linear-gradient(180deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.45) 50%, rgba(212,175,55,0) 100%); }
+  .panel h3 {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 48;
+    font-style: italic; font-weight: 500;
+    font-size: clamp(23px, 2.6vw, 34px);
+    line-height: 1.22;
+    margin: 16px 0 22px;
+    color: var(--ivory);
+  }
+  .panel p {
+    color: var(--ivory-soft);
+    font-size: 15px; line-height: 1.78;
+    margin-bottom: 15px; max-width: 46ch;
+  }
+  .panel .facts { margin-top: 28px; display: flex; flex-direction: column; }
+  .panel .facts div {
+    display: grid; grid-template-columns: 1fr auto; gap: 18px;
+    padding: 13px 0; align-items: baseline;
+    border-bottom: 1px solid rgba(212,175,55,0.16);
+  }
+  .panel .facts dt {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ivory-mute);
+  }
+  .panel .facts dd {
+    font-family: 'Cinzel', serif; font-weight: 500;
+    font-size: 15px; letter-spacing: 0.06em;
+    color: var(--gold); text-align: right;
+  }
+
+  /* ---------- Practice (marble tiles) ---------- */
+  .practice { padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 56px); }
+  .practice .inner { max-width: 1360px; margin: 0 auto; }
+  .practice .head { text-align: center; margin-bottom: 56px; }
+  .practice h2 {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 96;
+    font-weight: 500;
+    font-size: clamp(38px, 5.4vw, 78px);
+    line-height: 1.06; margin: 22px 0 0;
+  }
+  .practice h2 i { font-style: italic; }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(212,175,55,0.20);
+    border: 1px solid rgba(212,175,55,0.30);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.5);
+  }
+  .tile {
+    position: relative;
+    background: linear-gradient(165deg, rgba(40,31,23,0.94) 0%, rgba(14,10,6,0.96) 100%);
+    padding: 34px 26px 30px;
+    min-height: 254px;
+    display: flex; flex-direction: column;
+    transition: background .35s ease;
+  }
+  .tile:hover { background: linear-gradient(165deg, rgba(58,44,28,0.96) 0%, rgba(22,15,8,0.97) 100%); }
+  .tile .numeral {
+    font-family: 'Cinzel', serif; font-weight: 700;
+    font-size: 28px; letter-spacing: 0.08em;
+    margin-bottom: 16px;
+  }
+  .tile h3 {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 48;
+    font-weight: 500; font-size: 25px;
+    line-height: 1.14; color: var(--ivory);
+    margin-bottom: 14px;
+  }
+  .tile p {
+    font-size: 13.5px; line-height: 1.62;
+    color: var(--ivory-mute);
+    margin-bottom: 18px; flex: 1;
+  }
+  .tile .lex {
+    font-family: 'Jost', sans-serif;
+    font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: rgba(212,175,55,0.72);
+    padding-top: 13px;
+    border-top: 1px solid rgba(212,175,55,0.18);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact { padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 56px) 60px; }
+  .contact .inner { max-width: 1280px; margin: 0 auto; }
+  .contact .vault {
+    padding: clamp(40px, 5.5vw, 80px);
+    background: linear-gradient(165deg, rgba(34,26,18,0.55) 0%, rgba(8,5,3,0.75) 100%);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: clamp(36px, 5vw, 80px);
+    align-items: center;
+  }
+  .contact .crest-sm { margin-bottom: 26px; }
+  .contact h2 {
+    font-family: 'Cinzel', serif; font-weight: 600;
+    font-size: clamp(32px, 4.6vw, 60px);
+    letter-spacing: 0.06em; text-indent: 0.06em;
+    line-height: 1.1; margin-bottom: 20px;
+  }
+  .contact .lede {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 48;
+    font-style: italic; font-size: 20px; line-height: 1.5;
+    color: var(--ivory-soft); max-width: 32ch; margin-bottom: 34px;
+  }
+  .cta {
+    display: inline-block;
+    padding: 17px 40px;
+    background: var(--gold-ramp);
+    color: #241802;
+    font-family: 'Jost', sans-serif;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.34em; text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 5px rgba(0,0,0,0.3);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.5); }
+  .coords { display: flex; flex-direction: column; gap: 26px; }
+  .coords div { padding-bottom: 20px; border-bottom: 1px solid rgba(212,175,55,0.20); }
+  .coords dt {
+    font-family: 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--ivory-mute); margin-bottom: 10px;
+  }
+  .coords dd {
+    font-family: 'Bodoni Moda', serif;
+    font-variation-settings: "opsz" 32;
+    font-size: 19px; line-height: 1.45; color: var(--ivory);
+  }
+  .coords dd a:hover { color: var(--gold-light); }
+
+  footer {
+    max-width: 1280px; margin: 60px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(212,175,55,0.18);
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--ivory-mute);
+  }
+  footer .c { text-align: center; }
+  footer .r { text-align: right; }
+  footer b { color: var(--gold); font-weight: 400; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) {
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 880px) {
+    nav { grid-template-columns: 1fr auto; gap: 14px; padding: 20px; }
+    nav .links { display: none; }
+    nav .mono { justify-self: start; }
+    .hero { min-height: auto; padding: 100px 16px 70px; }
+    .panel { grid-template-columns: 1fr; gap: 34px; }
+    .panel .divider-v { height: 1px; width: 100%; background: linear-gradient(90deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.45) 50%, rgba(212,175,55,0) 100%); }
+    .contact .vault { grid-template-columns: 1fr; }
+    footer { grid-template-columns: 1fr; gap: 12px; }
+    footer .c, footer .r { text-align: left; }
+  }
+  @media (max-width: 560px) {
+    .tiles { grid-template-columns: 1fr; }
+    .tile { min-height: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<!-- Material filters -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Dark marble: sparse pale veins. Steep alpha slope keeps only the
+         top of the turbulence range, so veins read as thin filaments
+         rather than soft cloud. -->
+    <filter id="veinDark" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.008 0.052" numOctaves="5" seed="17" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0.60
+                0 0 0 0 0.53
+                0 0 0 0 0.39
+                7.5 0 0 0 -3.95"/>
+    </filter>
+    <!-- Secondary hairline pass: brighter, tighter, sparser still -->
+    <filter id="veinDarkFine" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.021 0.115" numOctaves="3" seed="41" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0.80
+                0 0 0 0 0.71
+                0 0 0 0 0.50
+                9.5 0 0 0 -5.45"/>
+    </filter>
+    <!-- Cream marble: grey veining over warm ivory stone -->
+    <filter id="veinCream" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.056" numOctaves="5" seed="5" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0.49
+                0 0 0 0 0.45
+                0 0 0 0 0.39
+                7.0 0 0 0 -3.70"/>
+    </filter>
+    <filter id="veinCreamFine" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.023 0.125" numOctaves="3" seed="29" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0.32
+                0 0 0 0 0.29
+                0 0 0 0 0.24
+                9.5 0 0 0 -5.60"/>
+    </filter>
+    <!-- Wood: fine directional grain -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="4" seed="23" result="t"/>
+      <feColorMatrix in="t" type="matrix"
+        values="0 0 0 0 0.10
+                0 0 0 0 0.06
+                0 0 0 0 0.03
+                1.5 0 0 0 -0.45"/>
+    </filter>
+
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0"    stop-color="#6E5220"/>
+      <stop offset="0.22" stop-color="#D4AF37"/>
+      <stop offset="0.40" stop-color="#F7ECC0"/>
+      <stop offset="0.58" stop-color="#C9A227"/>
+      <stop offset="0.78" stop-color="#F0DFA0"/>
+      <stop offset="1"    stop-color="#7A5C24"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<!-- ============ HERO ============ -->
+<header class="slab hero">
+  <svg class="tex" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="900" fill="#15100B"/>
+    <rect width="1400" height="900" filter="url(#veinDark)" opacity="0.85"/>
+    <rect width="1400" height="900" filter="url(#veinDarkFine)" opacity="0.60"/>
+  </svg>
+  <div class="vignette"></div>
+
+  <nav>
+    <div class="links">
+      <a href="#kabinet">Kabinet</a>
+      <a href="#praksa">Praksa</a>
+      <a href="#kontakt">Kontakt</a>
+    </div>
+    <div class="mono gilt">A&nbsp;S</div>
+    <div class="lang">
+      <span class="on">SR</span><span class="sep">·</span>
+      <span>ЋИР</span><span class="sep">·</span>
+      <span>EN</span>
+    </div>
+  </nav>
+
+  <div class="inner plaque">
+    <!-- Crest replaces the portrait -->
+    <svg class="crest" width="86" height="104" viewBox="0 0 86 104" aria-hidden="true">
+      <path d="M43 3 L81 17 V52 C81 76 63 92 43 101 C23 92 5 76 5 52 V17 Z"
+            fill="none" stroke="url(#goldGrad)" stroke-width="1.6"/>
+      <path d="M43 10 L75 21 V52 C75 72 60 86 43 94 C26 86 11 72 11 52 V21 Z"
+            fill="rgba(212,175,55,0.06)" stroke="rgba(212,175,55,0.35)" stroke-width="0.8"/>
+      <text x="43" y="60" text-anchor="middle"
+            font-family="Cinzel, serif" font-size="30" font-weight="600"
+            fill="url(#goldGrad)" letter-spacing="1">AS</text>
+      <path d="M28 70 H58" stroke="url(#goldGrad)" stroke-width="1"/>
+      <path d="M43 74 l4 4 -4 4 -4 -4 Z" fill="url(#goldGrad)"/>
+    </svg>
+
+    <h1 class="gilt">Savković</h1>
+    <p class="sub">Advokatska kancelarija u Beogradu, u neprekidnom radu od 2008. godine.</p>
+
+    <div class="ornament"><span class="lozenge"></span></div>
+
+    <div class="est">
+      <div>Imenik AK Beograd<b>№ 3462</b></div>
+      <div>Godina upisa<b>MMVIII</b></div>
+      <div>Oblasti prakse<b>VIII</b></div>
+      <div>Radni jezici<b>SR · EN · DE</b></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ GOLD BAND ============ -->
+<div class="band"><span>Zastupanje pred sudovima Republike Srbije · Kneza Miloša 42, Beograd</span></div>
+
+<!-- ============ MANIFEST ============ -->
+<section class="slab manifest">
+  <svg class="tex" viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="700" fill="#EDE6DA"/>
+    <rect width="1400" height="700" filter="url(#veinCream)" opacity="0.85"/>
+    <rect width="1400" height="700" filter="url(#veinCreamFine)" opacity="0.55"/>
+  </svg>
+  <div class="inner">
+    <div class="eyebrow">Načelo kancelarije</div>
+    <p class="quote">Klijentu ne dugujem obećanje ishoda. Dugujem mu <b>pažnju</b>, urednost i istinu o mogućnostima postupka.</p>
+    <div class="ornament"><span class="lozenge"></span></div>
+    <p class="attrib" style="margin-top:26px">Aleksandar Savković · advokat</p>
+  </div>
+</section>
+
+<!-- ============ ABOUT (wood) ============ -->
+<section class="slab about" id="kabinet">
+  <svg class="tex" viewBox="0 0 1400 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="1000" fill="#2A1D12"/>
+    <rect width="1400" height="1000" fill="#1C1309" opacity="0.55"/>
+    <rect width="1400" height="1000" filter="url(#grain)" opacity="0.55"/>
+  </svg>
+  <div class="vignette"></div>
+  <div class="inner">
+    <div class="head">
+      <div class="eyebrow">Kabinet</div>
+      <h2>Sedamnaest godina <i>pred sudom</i></h2>
+    </div>
+
+    <div class="panel framed">
+      <div>
+        <div class="eyebrow">Način rada</div>
+        <h3>Predmet se vodi pisano, uredno i sa jednom rečenicom istine.</h3>
+        <p>Rad sa klijentom počinje uvek istim pitanjem: šta je u predmetu činjenica, a šta pretpostavka. Ono što nije činjenica ostaje izvan spisa.</p>
+        <p>Redovna komunikacija je pravilo, ne izuzetak — klijent u svakom trenutku zna gde stoji predmet, koji je sledeći korak i koje su mogućnosti.</p>
+        <p>Sve što klijent poveri kancelariji čuva se kao advokatska tajna, u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p>
+      </div>
+
+      <div class="divider-v" aria-hidden="true"></div>
+
+      <div>
+        <div class="eyebrow">Biografija</div>
+        <h3>Diplomirao 2004. Praksa od 2008.</h3>
+        <p>Rođen 1980. u Beogradu. Diploma Pravnog fakulteta Univerziteta u Beogradu, sa temom iz oblasti privrednog prava.</p>
+        <dl class="facts">
+          <div><dt>Pravni fakultet, Beograd</dt><dd>MMIV</dd></div>
+          <div><dt>Pravosudni ispit</dt><dd>MMVI</dd></div>
+          <div><dt>Advokatski ispit</dt><dd>MMVIII</dd></div>
+          <div><dt>Imenik AK Beograd</dt><dd>№ 3462</dd></div>
+          <div><dt>Radni jezici</dt><dd>SR · EN · DE</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section class="slab practice" id="praksa">
+  <svg class="tex" viewBox="0 0 1400 1100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="1100" fill="#15100B"/>
+    <rect width="1400" height="1100" filter="url(#veinDark)" opacity="0.78"/>
+    <rect width="1400" height="1100" filter="url(#veinDarkFine)" opacity="0.50"/>
+  </svg>
+  <div class="vignette"></div>
+  <div class="inner">
+    <div class="head">
+      <div class="eyebrow">Oblasti prakse</div>
+      <h2>Osam oblasti <i>redovnog postupanja</i></h2>
+    </div>
+
+    <div class="tiles">
+      <article class="tile">
+        <div class="numeral gilt">I</div>
+        <h3>Privredno pravo</h3>
+        <p>Osnivanje i statusne promene privrednih društava, ugovori u privredi, privredni sporovi, likvidacija.</p>
+        <div class="lex">Zakon o privrednim društvima</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">II</div>
+        <h3>Krivično pravo</h3>
+        <p>Odbrana u istrazi i pred sudom, zastupanje oštećenih, krivične prijave, žalbeni postupak.</p>
+        <div class="lex">Krivični zakonik · ZKP</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">III</div>
+        <h3>Nasledno pravo</h3>
+        <p>Ostavinski postupci, testamenti, izdvajanje iz zaostavštine, sporovi među naslednicima.</p>
+        <div class="lex">Zakon o nasleđivanju</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">IV</div>
+        <h3>Porodično pravo</h3>
+        <p>Razvod braka, vršenje roditeljskog prava, izdržavanje, imovinski odnosi supružnika.</p>
+        <div class="lex">Porodični zakon</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">V</div>
+        <h3>Radno pravo</h3>
+        <p>Sporovi iz radnog odnosa, otkazi ugovora o radu, mobing, kolektivni ugovori.</p>
+        <div class="lex">Zakon o radu</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">VI</div>
+        <h3>Nepokretnosti</h3>
+        <p>Kupoprodaja, uknjižba, ugovor o poklonu, doživotno izdržavanje, građevinsko zemljište.</p>
+        <div class="lex">ZOSPO · ZDKZ</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">VII</div>
+        <h3>Obligaciono pravo</h3>
+        <p>Ugovori, naknada štete, dužničko-poverilački odnosi, izvršni postupak.</p>
+        <div class="lex">ZOO · ZIO</div>
+      </article>
+      <article class="tile">
+        <div class="numeral gilt">VIII</div>
+        <h3>Upravno pravo</h3>
+        <p>Postupci pred organima uprave, upravni sporovi, javne nabavke, poreske stvari.</p>
+        <div class="lex">ZUP · ZUS</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="slab contact" id="kontakt">
+  <svg class="tex" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="1400" height="900" fill="#100C08"/>
+    <rect width="1400" height="900" filter="url(#veinDark)" opacity="0.62"/>
+  </svg>
+  <div class="vignette"></div>
+  <div class="inner">
+    <div class="vault framed">
+      <div>
+        <svg class="crest-sm" width="58" height="70" viewBox="0 0 86 104" aria-hidden="true">
+          <path d="M43 3 L81 17 V52 C81 76 63 92 43 101 C23 92 5 76 5 52 V17 Z"
+                fill="none" stroke="url(#goldGrad)" stroke-width="1.8"/>
+          <text x="43" y="60" text-anchor="middle" font-family="Cinzel, serif"
+                font-size="30" font-weight="600" fill="url(#goldGrad)">AS</text>
+        </svg>
+        <h2 class="gilt">Kontakt</h2>
+        <p class="lede">Prvi razgovor je poverljiv, zakazuje se unapred i traje četrdeset pet minuta.</p>
+        <a class="cta" href="mailto:kancelarija@savkovic-advokat.rs">Zakažite konsultaciju</a>
+      </div>
+
+      <dl class="coords">
+        <div>
+          <dt>Kancelarija</dt>
+          <dd>Kneza Miloša 42<br>11000 Beograd, Srbija</dd>
+        </div>
+        <div>
+          <dt>Telefon &amp; WhatsApp</dt>
+          <dd><a href="tel:+381113035042">+381 11 30 35 042</a><br><a href="https://wa.me/381638026042">+381 63 802 60 42</a></dd>
+        </div>
+        <div>
+          <dt>Elektronska pošta</dt>
+          <dd><a href="mailto:kancelarija@savkovic-advokat.rs">kancelarija@savkovic-advokat.rs</a></dd>
+        </div>
+        <div style="border-bottom:none">
+          <dt>Radno vreme</dt>
+          <dd>Ponedeljak — petak, 09—17 h</dd>
+        </div>
+      </dl>
+    </div>
+
+    <footer>
+      <div>Advokatska komora Beograda · <b>№ 3462</b></div>
+      <div class="c">Anno <b>MMVIII</b> — MMXXVI</div>
+      <div class="r">U skladu sa <b>Kodeksom profesionalne etike advokata</b></div>
+    </footer>
+  </div>
+</section>
