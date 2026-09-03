@@ -1,0 +1,795 @@
+<title>Sillage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,200..500,30..100;1,9..144,200..500,30..100&family=Manrope:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --ground: #F5EFE4;
+    --ground-2: #EDE6D8;
+    --ink: #1A1815;
+    --ink-soft: #4A453C;
+    --ink-mute: #8A8172;
+    --hair: #D8CFBE;
+    --hair-strong: #B8B0A0;
+    --dark: #0F0F0F;
+    --dark-2: #1A1815;
+    --orange: #FF6600;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Cursor — orange dot, difference blend */
+  .cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px; height: 12px;
+    background: var(--orange);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width .25s cubic-bezier(.2,.6,.2,1), height .25s cubic-bezier(.2,.6,.2,1), background .25s;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+  .cursor.big { width: 64px; height: 64px; }
+  .cursor.link { width: 32px; height: 32px; }
+  @media (hover: none) { .cursor { display: none; } body { cursor: auto; } }
+  @media (prefers-reduced-motion: reduce) { .cursor { transition: none; } }
+
+  a { cursor: none; color: inherit; text-decoration: none; }
+  @media (hover: none) { a { cursor: pointer; } }
+
+  /* Nav — micro top bar */
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 22px clamp(20px, 4vw, 48px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    mix-blend-mode: difference;
+    color: #F5EFE4;
+  }
+  nav.top .left { display: flex; gap: 32px; }
+  nav.top .brand {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 48, "SOFT" 60;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: #F5EFE4;
+  }
+  nav.top a:hover { color: var(--orange); }
+  nav.top .right { justify-self: end; display: flex; gap: 12px; }
+  nav.top .right .on { color: #F5EFE4; }
+  nav.top .right .off { opacity: 0.5; }
+  nav.top .right span { padding: 0 3px; }
+
+  /* HERO — full-viewport wordmark */
+  .hero {
+    height: 100vh;
+    min-height: 640px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .hero .stage {
+    position: relative;
+    text-align: center;
+    padding: 0 4vw;
+    width: 100%;
+  }
+  .hero .wordmark {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 100, "wght" 300;
+    font-style: italic;
+    font-size: clamp(120px, 30vw, 460px);
+    line-height: 0.82;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    white-space: nowrap;
+    text-wrap: balance;
+    position: relative;
+    display: inline-block;
+  }
+  .hero .wordmark .dot {
+    position: absolute;
+    top: 0.18em;
+    right: -0.03em;
+    width: 0.09em;
+    height: 0.09em;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+  .hero .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-top: 40px;
+    display: flex; justify-content: center; align-items: center; gap: 20px;
+  }
+  .hero .kicker::before, .hero .kicker::after {
+    content: ''; width: 40px; height: 1px; background: var(--hair-strong);
+  }
+  .hero .bottom {
+    position: absolute; bottom: 32px; left: 0; right: 0;
+    display: grid; grid-template-columns: 1fr 1fr; padding: 0 clamp(24px, 4vw, 48px);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .hero .bottom .r { text-align: right; }
+  .hero .bottom .scroll-cue {
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .hero .bottom .scroll-cue::after {
+    content: '↓';
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--orange);
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hero .bottom .scroll-cue::after { animation: none; }
+  }
+
+  /* MANIFEST — a single italic thesis */
+  .manifest {
+    padding: clamp(120px, 20vh, 220px) clamp(24px, 6vw, 80px);
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  .manifest .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 60px;
+  }
+  .manifest .thesis {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 96, "SOFT" 80;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(32px, 4.2vw, 62px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-wrap: balance;
+    opacity: 0;
+    animation: rise 1.4s cubic-bezier(.2,.6,.2,1) 0.3s forwards;
+  }
+  .manifest .thesis u {
+    text-decoration: none;
+    background-image: linear-gradient(to bottom, transparent 62%, var(--orange) 62%, var(--orange) 68%, transparent 68%);
+    padding: 0 4px;
+  }
+  .manifest .signature {
+    margin-top: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .manifest .thesis { opacity: 1; animation: none; }
+  }
+
+  /* Section divider — thin orange centered */
+  .divider {
+    width: 1px; height: 80px; background: var(--hair-strong);
+    margin: 0 auto; position: relative;
+  }
+  .divider::after {
+    content: ''; position: absolute; bottom: 0; left: 50%;
+    width: 6px; height: 6px; background: var(--orange);
+    border-radius: 50%; transform: translate(-50%, 50%);
+  }
+
+  /* ABOUT — two column, hairline */
+  .about {
+    padding: 160px clamp(24px, 6vw, 80px) 200px;
+    max-width: 1360px; margin: 0 auto;
+  }
+  .about .head {
+    text-align: center;
+    margin-bottom: 100px;
+  }
+  .about .head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 24px;
+  }
+  .about .head h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 70;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(52px, 7vw, 108px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .about .cols {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: clamp(40px, 5vw, 96px);
+    align-items: start;
+  }
+  .about .rule {
+    background: var(--hair-strong);
+    align-self: stretch;
+    width: 1px;
+  }
+  .about .col .sec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .about .col .sec-label::before {
+    content: '§';
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--orange);
+    font-size: 18px;
+  }
+  .about .col h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 96, "SOFT" 60;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(30px, 3.4vw, 46px);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin-bottom: 32px;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .about .col p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    max-width: 42ch;
+  }
+  .about .col .facts {
+    margin-top: 40px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .about .col .facts .fact {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hair);
+    align-items: baseline;
+  }
+  .about .col .facts .fact dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .about .col .facts .fact dd {
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .about .col .facts .fact dd em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--orange);
+    font-size: 15px;
+  }
+
+  /* PRACTICE — horizontal scroll */
+  .practice-wrap {
+    background: var(--ground-2);
+    padding: 140px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .practice-wrap .rail-head {
+    display: grid; grid-template-columns: 1fr 1fr;
+    padding: 0 clamp(24px, 6vw, 80px) 60px;
+    align-items: end;
+  }
+  .practice-wrap .rail-head .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .practice-wrap .rail-head h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 70;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(44px, 6vw, 88px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-align: right;
+    text-wrap: balance;
+  }
+  .practice-wrap .cue {
+    display: flex; justify-content: flex-end; align-items: center; gap: 14px;
+    padding: 0 clamp(24px, 6vw, 80px) 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .practice-wrap .cue::after {
+    content: '→';
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--orange);
+    animation: nudge 2s ease-in-out infinite;
+  }
+  @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+  @media (prefers-reduced-motion: reduce) {
+    .practice-wrap .cue::after { animation: none; }
+  }
+
+  .rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 88vw;
+    gap: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 0 6vw;
+    scrollbar-width: none;
+  }
+  .rail::-webkit-scrollbar { display: none; }
+  .card {
+    scroll-snap-align: center;
+    padding: 40px clamp(24px, 5vw, 80px) 60px;
+    border-left: 1px solid var(--hair-strong);
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 60vh;
+    position: relative;
+  }
+  .card:first-child { border-left: none; }
+  .card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--orange);
+    margin-bottom: 28px;
+  }
+  .card .name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 90;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(64px, 10vw, 180px);
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    text-wrap: balance;
+    margin-bottom: 40px;
+  }
+  .card .desc {
+    max-width: 40ch;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .card .lex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-top: 20px;
+    border-top: 1px solid var(--hair);
+    display: flex; gap: 24px;
+  }
+  .card .lex span:first-child { color: var(--orange); }
+
+  .rail-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 40px clamp(24px, 6vw, 80px) 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .rail-foot .pager { display: flex; gap: 8px; }
+  .rail-foot .pager .pip {
+    width: 22px; height: 1px; background: var(--hair-strong);
+  }
+  .rail-foot .pager .pip.on { background: var(--orange); height: 2px; }
+
+  /* CONTACT — dark, orange CTA */
+  .contact {
+    background: var(--dark);
+    color: var(--ground);
+    padding: 160px clamp(24px, 6vw, 80px) 80px;
+    position: relative;
+  }
+  .contact .grid {
+    max-width: 1360px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 6fr 5fr;
+    gap: 96px;
+    align-items: start;
+  }
+  .contact .left .mini-wordmark {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144, "SOFT" 90, "wght" 300;
+    font-style: italic;
+    font-size: clamp(80px, 12vw, 200px);
+    line-height: 0.85;
+    letter-spacing: -0.035em;
+    color: var(--ground);
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+  }
+  .contact .left .mini-wordmark .dot {
+    position: absolute; top: 0.18em; right: -0.03em;
+    width: 0.09em; height: 0.09em; background: var(--orange); border-radius: 50%;
+  }
+  .contact .left .lede {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 48, "SOFT" 60;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--ground);
+    max-width: 32ch;
+    margin-bottom: 48px;
+  }
+  .contact .cta {
+    display: inline-flex; align-items: center; gap: 20px;
+    padding: 20px 32px;
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: background .25s, color .25s;
+  }
+  .contact .cta::after {
+    content: '→';
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 20px;
+    transition: transform .25s;
+  }
+  .contact .cta:hover { background: var(--orange); color: var(--dark); }
+  .contact .cta:hover::after { transform: translateX(6px); color: var(--dark); }
+
+  .contact .right {
+    display: flex; flex-direction: column; gap: 44px;
+    padding-top: 60px;
+  }
+  .contact .right .block dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+  }
+  .contact .right .block dd {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 24, "SOFT" 50;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ground);
+  }
+  .contact .right .block dd a:hover { color: var(--orange); }
+  .contact .right .block dd em { font-style: normal; color: var(--orange); }
+
+  .colophon {
+    max-width: 1360px; margin: 120px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid #2a2724;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #6a655a;
+  }
+  .colophon .c { text-align: center; }
+  .colophon .r { text-align: right; }
+  .colophon em { color: var(--orange); font-style: normal; }
+
+  /* Responsive */
+  @media (max-width: 860px) {
+    .hero { min-height: 520px; }
+    .hero .wordmark { font-size: clamp(84px, 24vw, 260px); }
+    .hero .bottom { grid-template-columns: 1fr; gap: 12px; text-align: center; }
+    .hero .bottom .r { text-align: center; }
+    .about .cols { grid-template-columns: 1fr; gap: 60px; }
+    .about .rule { display: none; }
+    .about .col .facts .fact { grid-template-columns: 1fr; gap: 4px; }
+    .practice-wrap .rail-head { grid-template-columns: 1fr; gap: 20px; }
+    .practice-wrap .rail-head h2 { text-align: left; }
+    .rail { grid-auto-columns: 92vw; padding: 0 4vw; }
+    .card { min-height: 50vh; padding: 32px 20px 40px; }
+    .contact .grid { grid-template-columns: 1fr; gap: 48px; }
+    .contact .right { padding-top: 0; }
+    .colophon { grid-template-columns: 1fr; text-align: left; }
+    .colophon .c, .colophon .r { text-align: left; }
+  }
+</style>
+
+<div class="cursor" id="cursor"></div>
+
+<nav class="top">
+  <div class="left">
+    <a href="#kancelarija">Kancelarija</a>
+    <a href="#praksa">Praksa</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <div class="brand">Savković</div>
+  <div class="right">
+    <span class="on">SR</span>
+    <span class="off">ЋИР</span>
+    <span class="off">EN</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="stage">
+    <div class="wordmark">Savković<span class="dot" aria-hidden="true"></span></div>
+    <div class="kicker">Advokat · Beograd · Anno MMVIII</div>
+  </div>
+  <div class="bottom">
+    <div>Imenik AK Beograd · № 3462</div>
+    <div class="r"><span class="scroll-cue">Skrolujte</span></div>
+  </div>
+</section>
+
+<section class="manifest">
+  <div class="eyebrow">— Manifest kancelarije —</div>
+  <p class="thesis">Klijentu ne dugujem obećanje ishoda. Dugujem mu <u>pažnju</u>, urednost, i istinu o mogućnostima postupka.</p>
+  <div class="signature">Aleksandar Savković · advokat</div>
+</section>
+
+<div class="divider"></div>
+
+<section class="about" id="kancelarija">
+  <div class="head">
+    <div class="label">§ Kancelarija</div>
+    <h2>Sedamnaest godina pred <em style="font-style: italic;">sudom.</em></h2>
+  </div>
+  <div class="cols">
+    <div class="col">
+      <div class="sec-label">Način rada</div>
+      <h3>Predmet se vodi pisano, uredno, i sa jednom rečenicom istine.</h3>
+      <p>Rad sa klijentom počinjem uvek istim pitanjem: šta je od informacija u predmetu činjenica, a šta je pretpostavka. Sve što nije činjenica ostavlja se izvan spisa.</p>
+      <p>Redovna komunikacija sa klijentom je pravilo, ne izuzetak. Klijent u svakom trenutku zna gde stoji njegov predmet, koji je sledeći korak, i koje su mogućnosti.</p>
+      <p>Sve što klijent poveri kancelariji čuva se kao advokatska tajna, u skladu sa Zakonom o advokaturi i Kodeksom profesionalne etike advokata.</p>
+    </div>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="col">
+      <div class="sec-label">Biografija</div>
+      <h3>Diplomirao 2004. Praksa od 2008.</h3>
+      <p>Rođen 1980. godine u Beogradu. Diploma Pravnog fakulteta Univerziteta u Beogradu, godina 2004, sa temom u oblasti privrednog prava. Pravosudni ispit položio pred komisijom Ministarstva pravde 2006. godine.</p>
+      <dl class="facts">
+        <div class="fact"><dt>Diploma</dt><dd>Pravni fakultet<br>Beograd, <em>MMIV</em></dd></div>
+        <div class="fact"><dt>Pravosudni ispit</dt><dd>Ministarstvo pravde<br><em>MMVI</em></dd></div>
+        <div class="fact"><dt>Advokatski ispit</dt><dd>AK Srbije<br><em>MMVIII</em></dd></div>
+        <div class="fact"><dt>Imenik</dt><dd>AK Beograd · № <em>3462</em></dd></div>
+        <div class="fact"><dt>Članstva</dt><dd>AK Beograd, AK Srbije<br>Udruženje medijatora</dd></div>
+        <div class="fact"><dt>Radni jezici</dt><dd>Srpski, engleski, nemački</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="practice-wrap" id="praksa">
+  <div class="rail-head">
+    <div class="label">§ Praksa · Osam oblasti</div>
+    <h2>Oblasti u kojima kancelarija <em style="font-style: italic;">redovno postupa.</em></h2>
+  </div>
+  <div class="cue">Klizite u stranu</div>
+  <div class="rail" id="rail" role="region" aria-label="Oblasti prakse">
+    <article class="card">
+      <div>
+        <div class="num">I. — Prvo</div>
+        <div class="name">Privredno</div>
+        <p class="desc">Osnivanje i statusne promene privrednih društava, ugovori u privredi, privredni sporovi, likvidacija.</p>
+      </div>
+      <div class="lex"><span>Zakon o privr. društvima</span><span>ZOO · čl. 15</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">II. — Drugo</div>
+        <div class="name">Krivično</div>
+        <p class="desc">Odbrana u istrazi i pred sudom, zastupanje oštećenih, krivične prijave, žalbeni postupak.</p>
+      </div>
+      <div class="lex"><span>Krivični zakonik</span><span>ZKP · čl. 71</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">III. — Treće</div>
+        <div class="name">Nasledno</div>
+        <p class="desc">Ostavinski postupci, testamenti, izdvajanje iz zaostavštine, sporovi među naslednicima.</p>
+      </div>
+      <div class="lex"><span>Zakon o nasleđivanju</span><span>čl. 1</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">IV. — Četvrto</div>
+        <div class="name">Porodično</div>
+        <p class="desc">Razvod braka, vršenje roditeljskog prava, izdržavanje, imovinski odnosi supružnika.</p>
+      </div>
+      <div class="lex"><span>Porodični zakon</span><span>čl. 40</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">V. — Peto</div>
+        <div class="name">Radno</div>
+        <p class="desc">Sporovi iz radnog odnosa, otkazi ugovora o radu, mobing, kolektivni ugovori, socijalno osiguranje.</p>
+      </div>
+      <div class="lex"><span>Zakon o radu</span><span>čl. 179</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">VI. — Šesto</div>
+        <div class="name">Nepokretnosti</div>
+        <p class="desc">Kupoprodaja, uknjižba, ugovor o poklonu, doživotno izdržavanje, građevinsko zemljište.</p>
+      </div>
+      <div class="lex"><span>ZOSPO · čl. 20</span><span>ZDKZ</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">VII. — Sedmo</div>
+        <div class="name">Obligaciono</div>
+        <p class="desc">Ugovori, naknada štete, dužničko-poverilački odnosi, izvršni postupak.</p>
+      </div>
+      <div class="lex"><span>ZOO · čl. 148</span><span>ZIO</span></div>
+    </article>
+    <article class="card">
+      <div>
+        <div class="num">VIII. — Osmo</div>
+        <div class="name">Upravno</div>
+        <p class="desc">Postupci pred organima uprave, upravni sporovi, javne nabavke, poreske stvari.</p>
+      </div>
+      <div class="lex"><span>ZUP · čl. 1</span><span>ZUS</span></div>
+    </article>
+  </div>
+  <div class="rail-foot">
+    <div>I / VIII · Osam oblasti prakse</div>
+    <div class="pager" id="pager" aria-hidden="true">
+      <div class="pip on"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+      <div class="pip"></div><div class="pip"></div><div class="pip"></div><div class="pip"></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="kontakt">
+  <div class="grid">
+    <div class="left">
+      <div class="mini-wordmark">Savković<span class="dot" aria-hidden="true"></span></div>
+      <p class="lede">Prvi razgovor je poverljiv, plaća se posebno, i traje četrdeset pet minuta.</p>
+      <a class="cta" href="mailto:kancelarija@savkovic-advokat.rs">Zakažite konsultaciju</a>
+    </div>
+    <div class="right">
+      <dl class="block">
+        <dt>Kancelarija</dt>
+        <dd>Kneza Miloša 42<br>11000 Beograd, Srbija</dd>
+      </dl>
+      <dl class="block">
+        <dt>Telefon &amp; WhatsApp</dt>
+        <dd><a href="tel:+381113035042">+381 11 30 35 042</a><br><a href="https://wa.me/381638026042">+381 63 802 60 42 <em>WA</em></a></dd>
+      </dl>
+      <dl class="block">
+        <dt>Elektronska pošta</dt>
+        <dd><a href="mailto:kancelarija@savkovic-advokat.rs">kancelarija@<br>savkovic-advokat.rs</a></dd>
+      </dl>
+      <dl class="block">
+        <dt>Radno vreme</dt>
+        <dd>Ponedeljak — petak<br>09.00 — 17.00 · uz najavu</dd>
+      </dl>
+    </div>
+  </div>
+  <div class="colophon">
+    <div>Advokatska komora Beograda · <em>№ 3462</em></div>
+    <div class="c">Anno MMVIII — MMXXVI</div>
+    <div class="r">Poslovanje u skladu sa <em>Kodeksom prof. etike advokata</em></div>
+  </div>
+</section>
+
+<script>
+  // Custom cursor
+  (function () {
+    const cursor = document.getElementById('cursor');
+    if (!cursor || matchMedia('(hover: none)').matches) return;
+    let tx = 0, ty = 0, cx = 0, cy = 0;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+    function tick() {
+      if (reduce) { cx = tx; cy = ty; }
+      else { cx += (tx - cx) * 0.28; cy += (ty - cy) * 0.28; }
+      cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+      requestAnimationFrame(tick);
+    }
+    tick();
+    document.querySelectorAll('a, .cta').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('link'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('link'));
+    });
+    document.querySelectorAll('.card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+    });
+  })();
+
+  // Pager sync
+  (function () {
+    const rail = document.getElementById('rail');
+    const pips = document.querySelectorAll('#pager .pip');
+    if (!rail || !pips.length) return;
+    let raf = 0;
+    rail.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const ratio = rail.scrollLeft / (rail.scrollWidth - rail.clientWidth);
+        const idx = Math.round(ratio * (pips.length - 1));
+        pips.forEach((p, i) => p.classList.toggle('on', i === idx));
+      });
+    }, { passive: true });
+  })();
+</script>
