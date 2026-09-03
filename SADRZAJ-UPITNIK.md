@@ -10,7 +10,7 @@ prepišite tačno onako kako stoje u dokumentima.
 
 | Polje | Vrednost |
 |---|---|
-| Ime i prezime | |
+| Ime i prezime |Lazar Savković|
 | Zvanje na sajtu (npr. „advokat") | |
 | Naziv kancelarije | |
 
