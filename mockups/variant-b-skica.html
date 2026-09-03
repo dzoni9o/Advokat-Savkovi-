@@ -1,0 +1,513 @@
+<title>Skica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bone: #F6F3EE;
+    --bone-2: #ECE7DE;
+    --graphite: #1B1A18;
+    --graphite-2: #4A4844;
+    --mute: #8A867E;
+    --forensic: #2A3B4A;
+    --hair: #D8D2C4;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bone);
+    color: var(--graphite);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv08";
+  }
+  .page { padding: 0 clamp(24px, 5vw, 72px); max-width: 1440px; margin: 0 auto; }
+
+  ::selection { background: var(--forensic); color: var(--bone); }
+
+  /* Nav — top-right only, aggressive minimum */
+  nav {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    padding: 32px 0;
+  }
+  nav .brand {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  nav .brand span { color: var(--mute); }
+  nav .right {
+    display: flex; gap: 40px; align-items: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  nav a { color: var(--graphite-2); text-decoration: none; }
+  nav a:hover { color: var(--forensic); }
+  nav .lang { display: flex; gap: 12px; padding-left: 40px; border-left: 1px solid var(--hair); }
+  nav .lang .on { color: var(--graphite); }
+
+  /* Hero — thesis */
+  .hero {
+    padding: 60px 0 100px;
+    display: grid;
+    grid-template-columns: 8fr 4fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .hero-left .index {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 44px;
+    display: flex; gap: 40px;
+  }
+  .hero-left .index span:first-child { color: var(--forensic); }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(64px, 10vw, 156px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin: 0 0 40px;
+    text-wrap: balance;
+    color: var(--graphite);
+  }
+  .hero h1 i { color: var(--forensic); font-style: italic; }
+  .hero-right {
+    padding-top: 12px;
+    position: sticky; top: 40px;
+  }
+  .hero-right .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-right .kicker::before {
+    content: ''; width: 24px; height: 1px; background: var(--forensic);
+  }
+  .hero-right p {
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--graphite-2);
+    margin: 0 0 32px;
+    max-width: 34ch;
+  }
+  .hero-right .actions {
+    display: flex; flex-direction: column; gap: 14px;
+    padding-top: 20px; border-top: 1px solid var(--hair);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .hero-right .actions a {
+    color: var(--graphite);
+    text-decoration: none;
+    display: flex; justify-content: space-between;
+    padding: 6px 0;
+  }
+  .hero-right .actions a::after {
+    content: '→';
+    font-family: 'IBM Plex Sans', sans-serif;
+    color: var(--mute);
+    transition: transform .2s;
+  }
+  .hero-right .actions a:hover { color: var(--forensic); }
+  .hero-right .actions a:hover::after { transform: translateX(4px); color: var(--forensic); }
+
+  /* Meta rail — thin strip, tabular */
+  .rail {
+    border-top: 1px solid var(--graphite);
+    border-bottom: 1px solid var(--hair);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 14px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .rail > div span { color: var(--graphite); font-weight: 500; }
+
+  /* Sections */
+  section { padding: 140px 0; }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 4fr 8fr;
+    gap: 48px;
+    align-items: baseline;
+    margin-bottom: 80px;
+  }
+  .sec-head .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--forensic);
+    display: flex; gap: 16px; align-items: center;
+  }
+  .sec-head .label::after {
+    content: ''; flex: 1; height: 1px; background: var(--hair); max-width: 80px;
+  }
+  .sec-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(36px, 5.5vw, 76px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .sec-head h2 i { font-style: italic; color: var(--forensic); }
+
+  /* About */
+  .about {
+    display: grid;
+    grid-template-columns: 4fr 5fr 3fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about .avatar {
+    aspect-ratio: 3 / 4;
+    background: var(--bone-2);
+    border: 1px solid var(--hair);
+    position: relative;
+    overflow: hidden;
+  }
+  .about .avatar svg { width: 100%; height: 100%; }
+  .about .avatar .tag {
+    position: absolute; bottom: 12px; left: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .about .prose p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--graphite-2);
+    max-width: 42ch;
+  }
+  .about .prose p:first-child {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    line-height: 1.35;
+    color: var(--graphite);
+    font-style: italic;
+    max-width: 30ch;
+    margin-bottom: 32px;
+  }
+  .about .facts {
+    display: flex; flex-direction: column; gap: 22px;
+    padding-top: 8px;
+  }
+  .about .facts .fact {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--hair);
+  }
+  .about .facts .fact dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .about .facts .fact dd {
+    margin: 0;
+    font-size: 14px;
+    color: var(--graphite);
+    line-height: 1.4;
+  }
+
+  /* Practice — archival catalog */
+  .catalog {
+    border-top: 1px solid var(--graphite);
+  }
+  .catalog .row {
+    display: grid;
+    grid-template-columns: 64px 2.5fr 4fr 1.5fr;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--hair);
+    align-items: baseline;
+    transition: background .15s;
+  }
+  .catalog .row:hover { background: var(--bone-2); padding-left: 8px; padding-right: 8px; }
+  .catalog .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--mute);
+    font-variant-numeric: tabular-nums;
+  }
+  .catalog h3 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--graphite);
+    letter-spacing: -0.01em;
+  }
+  .catalog p {
+    margin: 0;
+    color: var(--graphite-2);
+    font-size: 14px;
+    max-width: 52ch;
+    line-height: 1.55;
+  }
+  .catalog .tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    justify-content: flex-end;
+  }
+  .catalog .tags span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--forensic);
+    border: 1px solid var(--hair);
+    padding: 4px 8px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 80px 0 40px;
+    display: grid;
+    grid-template-columns: 4fr 3fr 3fr 2fr;
+    gap: 48px;
+    border-top: 1px solid var(--graphite);
+    align-items: start;
+  }
+  footer .wordmark {
+    font-family: 'Instrument Serif', serif;
+    font-size: 40px;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+  footer .wordmark i { color: var(--forensic); font-style: italic; }
+  footer .col dt {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mute);
+    margin-bottom: 12px;
+  }
+  footer .col dd { margin: 0; color: var(--graphite); font-size: 14px; line-height: 1.6; }
+  footer .fine {
+    grid-column: 1 / -1;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--hair);
+    display: flex; justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  footer .fine i { font-style: normal; color: var(--forensic); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; }
+    .hero-right { position: static; }
+    .rail { grid-template-columns: 1fr 1fr; gap: 12px 24px; }
+    .rail > div { padding: 8px 0; border-bottom: 1px dotted var(--hair); }
+    .sec-head { grid-template-columns: 1fr; gap: 20px; margin-bottom: 40px; }
+    .about { grid-template-columns: 1fr; gap: 32px; }
+    .about .avatar { max-width: 260px; }
+    .catalog .row { grid-template-columns: 40px 1fr; grid-template-rows: auto auto auto; gap: 8px 16px; }
+    .catalog .row p { grid-column: 2; }
+    .catalog .tags { grid-column: 2; justify-content: flex-start; margin-top: 4px; }
+    footer { grid-template-columns: 1fr 1fr; }
+    footer .wordmark { grid-column: 1 / -1; }
+  }
+</style>
+
+<div class="page">
+
+  <nav>
+    <div class="brand">Savković<span>.advokat</span></div>
+    <div class="right">
+      <a href="#kancelarija">Kancelarija</a>
+      <a href="#praksa">Praksa</a>
+      <a href="#kontakt">Kontakt</a>
+      <div class="lang">
+        <span class="on">SR</span>
+        <span>ЋИР</span>
+        <span>EN</span>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="index">
+        <span>№ 001 — Kancelarija</span>
+        <span>Beograd, MMXXVI</span>
+      </div>
+      <h1>Advokat radi<br>u <i>tišini</i> —<br>ne u tvrdnjama.</h1>
+    </div>
+    <aside class="hero-right">
+      <div class="kicker">Advokat · Beograd</div>
+      <p>Zastupanje domaćih i inostranih pravnih lica u privrednim sporovima, i fizičkih lica u krivičnim, naslednim i porodičnim postupcima. Sedište kancelarije: Kneza Miloša 42.</p>
+      <div class="actions">
+        <a href="#kontakt">Zakažite konsultaciju</a>
+        <a href="tel:+381113035042">+381 11 30 35 042</a>
+        <a href="mailto:kancelarija@savkovic-advokat.rs">Elektronska pošta</a>
+      </div>
+    </aside>
+  </section>
+
+  <div class="rail">
+    <div><span>17</span> godina prakse</div>
+    <div><span>AK BGD</span> № 3462</div>
+    <div><span>08</span> oblasti</div>
+    <div><span>SR</span> · EN · DE</div>
+    <div><span>MMVIII</span> — MMXXVI</div>
+  </div>
+
+  <section id="kancelarija">
+    <div class="sec-head">
+      <div class="label">Kancelarija</div>
+      <h2>Rad na osnovu <i>činjenica,</i><br>ne na osnovu obećanja.</h2>
+    </div>
+    <div class="about">
+      <div class="avatar">
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <linearGradient id="skinB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#c9bfae"/>
+              <stop offset="1" stop-color="#8f8474"/>
+            </linearGradient>
+            <linearGradient id="suitB" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2a3b4a"/>
+              <stop offset="1" stop-color="#1b262f"/>
+            </linearGradient>
+          </defs>
+          <rect width="300" height="400" fill="#ECE7DE"/>
+          <path d="M 20 400 L 20 300 Q 20 250 90 232 L 120 220 L 150 250 L 180 220 L 210 232 Q 280 250 280 300 L 280 400 Z" fill="url(#suitB)"/>
+          <path d="M 120 220 L 150 250 L 180 220 L 180 268 L 150 300 L 120 268 Z" fill="#F6F3EE"/>
+          <path d="M 147 253 L 153 253 L 155 320 L 150 328 L 145 320 Z" fill="#1B1A18"/>
+          <ellipse cx="150" cy="155" rx="54" ry="66" fill="url(#skinB)"/>
+          <path d="M 96 132 Q 100 74 150 68 Q 200 74 204 132 Q 204 108 184 98 Q 166 90 150 92 Q 134 90 116 98 Q 96 108 96 132 Z" fill="#22201d"/>
+          <ellipse cx="131" cy="158" rx="3" ry="4" fill="#1B1A18"/>
+          <ellipse cx="169" cy="158" rx="3" ry="4" fill="#1B1A18"/>
+        </svg>
+        <span class="tag">01 — Portret</span>
+      </div>
+      <div class="prose">
+        <p>Kancelariju vodim od 2008. godine. Rad sa klijentom počinjem uvek istim pitanjem: šta je od informacija u ovom predmetu činjenica, a šta je pretpostavka.</p>
+        <p>Diplomirao sam na Pravnom fakultetu Univerziteta u Beogradu 2004. godine, pravosudni ispit položio 2006, advokatski 2008. Praksa kancelarije obuhvata privredne sporove, krivične postupke i naslednopravne stvari — sa naglaskom na pisanu komunikaciju i uredan predmet.</p>
+        <p>Zastupam pravna lica iz Srbije, regiona i evropskih zemalja, kao i fizička lica pred sudovima Republike Srbije. Svi razgovori i dokumenti klijenta podležu obavezi advokatske tajne, u skladu sa Zakonom o advokaturi.</p>
+      </div>
+      <dl class="facts">
+        <div class="fact"><dt>Diploma</dt><dd>Pravni fakultet<br>Univerziteta u Beogradu, 2004</dd></div>
+        <div class="fact"><dt>Pravosudni ispit</dt><dd>Ministarstvo pravde, 2006</dd></div>
+        <div class="fact"><dt>Upis u Imenik</dt><dd>Advokatska komora Beograda, 2008 · № 3462</dd></div>
+        <div class="fact"><dt>Radni jezici</dt><dd>Srpski, engleski, nemački</dd></div>
+        <div class="fact"><dt>Članstva</dt><dd>AK Beograd, AK Srbije,<br>Udruženje medijatora Srbije</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="praksa">
+    <div class="sec-head">
+      <div class="label">Praksa · 08 oblasti</div>
+      <h2>Oblasti u kojima kancelarija <i>redovno postupa.</i></h2>
+    </div>
+    <div class="catalog">
+      <div class="row">
+        <span class="num">001</span>
+        <h3>Privredno pravo</h3>
+        <p>Osnivanje i statusne promene, ugovori u privredi, privredni sporovi, likvidacija.</p>
+        <div class="tags"><span>Ugovori</span><span>Sporovi</span></div>
+      </div>
+      <div class="row">
+        <span class="num">002</span>
+        <h3>Krivično pravo</h3>
+        <p>Odbrana u istrazi i pred sudom, zastupanje oštećenih, krivične prijave, žalbeni postupak.</p>
+        <div class="tags"><span>Odbrana</span><span>Žalba</span></div>
+      </div>
+      <div class="row">
+        <span class="num">003</span>
+        <h3>Nasledno pravo</h3>
+        <p>Ostavinski postupak, testamenti, izdvajanje iz zaostavštine, sporovi među naslednicima.</p>
+        <div class="tags"><span>Ostavina</span><span>Testament</span></div>
+      </div>
+      <div class="row">
+        <span class="num">004</span>
+        <h3>Porodično pravo</h3>
+        <p>Razvod braka, vršenje roditeljskog prava, izdržavanje, imovinski odnosi supružnika.</p>
+        <div class="tags"><span>Razvod</span><span>Deca</span></div>
+      </div>
+      <div class="row">
+        <span class="num">005</span>
+        <h3>Radno pravo</h3>
+        <p>Sporovi iz radnog odnosa, otkazi ugovora o radu, mobing, kolektivni ugovori, socijalno osiguranje.</p>
+        <div class="tags"><span>Otkaz</span><span>Mobing</span></div>
+      </div>
+      <div class="row">
+        <span class="num">006</span>
+        <h3>Nepokretnosti</h3>
+        <p>Kupoprodaja, uknjižba, ugovor o poklonu, doživotno izdržavanje, građevinsko zemljište.</p>
+        <div class="tags"><span>Kupoprodaja</span><span>Uknjižba</span></div>
+      </div>
+      <div class="row">
+        <span class="num">007</span>
+        <h3>Obligaciono pravo</h3>
+        <p>Ugovori, naknada štete, dužničko-poverilački odnosi, izvršni postupak.</p>
+        <div class="tags"><span>Ugovori</span><span>Naknada</span></div>
+      </div>
+      <div class="row">
+        <span class="num">008</span>
+        <h3>Upravno pravo</h3>
+        <p>Postupci pred organima uprave, upravni sporovi, javne nabavke, poreske stvari.</p>
+        <div class="tags"><span>Uprava</span><span>Javne nab.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="kontakt">
+    <div class="wordmark">Savković<br><i>advokat</i></div>
+    <dl class="col">
+      <dt>Kancelarija</dt>
+      <dd>Kneza Miloša 42<br>11000 Beograd<br>Republika Srbija</dd>
+    </dl>
+    <dl class="col">
+      <dt>Kontakt</dt>
+      <dd>+381 11 30 35 042<br>+381 63 802 60 42<br>kancelarija@savkovic-advokat.rs</dd>
+    </dl>
+    <dl class="col">
+      <dt>Termin</dt>
+      <dd>Pon — pet<br>09.00 — 17.00<br>Uz najavu</dd>
+    </dl>
+    <div class="fine">
+      <span>Advokatska komora Beograda · № 3462</span>
+      <span>© MMXXVI</span>
+      <span>Poslovanje u skladu sa <i>Kodeksom profesionalne etike advokata</i></span>
+    </div>
+  </footer>
+
+</div>

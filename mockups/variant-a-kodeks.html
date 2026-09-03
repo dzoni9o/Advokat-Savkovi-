@@ -1,0 +1,521 @@
+<title>Kodeks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@300;400;500&display=swap">
+<style>
+  :root {
+    --parchment: #F1EBDE;
+    --parchment-2: #E6DFCF;
+    --ink: #0F0E0C;
+    --ink-soft: #3A342A;
+    --ink-mute: #7A7062;
+    --redline: #7A1B1B;
+    --hairline: #C7BFAE;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+
+  /* Grain */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(122,27,27,0.03) 0, transparent 1px),
+      radial-gradient(circle at 70% 60%, rgba(15,14,12,0.03) 0, transparent 1px);
+    background-size: 3px 3px, 5px 5px;
+    z-index: 1;
+  }
+
+  /* Nav */
+  nav {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: baseline;
+    padding: 28px 0 24px;
+    border-bottom: 1px solid var(--hairline);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  nav .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink);
+  }
+  nav .brand em { font-style: italic; font-weight: 300; color: var(--ink-mute); }
+  nav ul {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; gap: 32px; justify-content: center;
+  }
+  nav ul a { color: var(--ink-soft); text-decoration: none; }
+  nav ul a:hover { color: var(--redline); }
+  nav .lang { text-align: right; letter-spacing: 0.2em; }
+  nav .lang span { padding: 0 4px; }
+  nav .lang .active { color: var(--ink); border-bottom: 1px solid var(--redline); }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 7fr 5fr;
+    gap: 64px;
+    align-items: end;
+    padding: 90px 0 40px;
+  }
+  .hero-copy .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--redline);
+    margin-bottom: 40px;
+    display: flex; gap: 18px; align-items: center;
+  }
+  .hero-copy .eyebrow::after {
+    content: ''; flex: 1; height: 1px; background: var(--redline); opacity: 0.5;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(56px, 8.5vw, 128px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin: 0 0 28px;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--redline);
+  }
+  .hero .sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 44px;
+  }
+  .hero-cta {
+    display: flex; gap: 32px; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .hero-cta a {
+    color: var(--ink); text-decoration: none;
+    padding-bottom: 6px; border-bottom: 1px solid var(--ink);
+    transition: color .2s, border-color .2s;
+  }
+  .hero-cta a:hover { color: var(--redline); border-color: var(--redline); }
+  .hero-cta .divider { width: 40px; height: 1px; background: var(--hairline); }
+
+  /* Portrait */
+  .portrait {
+    aspect-ratio: 4 / 5;
+    background: var(--parchment-2);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+  }
+  .portrait svg { width: 100%; height: 100%; display: block; }
+  .portrait .label {
+    position: absolute; top: 16px; left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    background: var(--parchment);
+    padding: 4px 8px;
+  }
+  .portrait .caption {
+    position: absolute; bottom: 16px; right: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    text-align: right;
+  }
+
+  /* Meta strip */
+  .meta {
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 48px;
+  }
+  .meta > div {
+    padding: 22px 24px;
+    border-right: 1px solid var(--hairline);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .meta > div:last-child { border-right: none; }
+  .meta dt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .meta dd {
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .meta dd em { font-style: italic; color: var(--ink-soft); }
+
+  /* Sections */
+  section { padding: 120px 0 40px; }
+  .sec-head {
+    display: grid;
+    grid-template-columns: 3fr 9fr;
+    gap: 64px;
+    align-items: baseline;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--hairline);
+    margin-bottom: 56px;
+  }
+  .sec-head .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--redline);
+  }
+  .sec-head h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 68px);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .sec-head h2 em { font-style: italic; color: var(--ink-soft); }
+
+  /* About - two column newspaper */
+  .about-body {
+    display: grid;
+    grid-template-columns: 3fr 9fr;
+    gap: 64px;
+  }
+  .about-body .lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-top: 4px;
+    border-top: 1px solid var(--ink);
+  }
+  .about-cols {
+    columns: 2;
+    column-gap: 48px;
+    column-rule: 1px solid var(--hairline);
+    max-width: none;
+  }
+  .about-cols p {
+    margin: 0 0 18px;
+    break-inside: avoid;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .about-cols p:first-child::first-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 68px;
+    line-height: 0.85;
+    float: left;
+    padding: 6px 10px 0 0;
+    color: var(--redline);
+    font-weight: 400;
+  }
+
+  /* Practice - § list */
+  .practice-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  .practice-item {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    gap: 20px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: baseline;
+  }
+  .practice-item:nth-child(odd) { border-right: 1px solid var(--hairline); padding-right: 32px; }
+  .practice-item:nth-child(even) { padding-left: 32px; }
+  .practice-item .par {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--redline);
+    font-weight: 300;
+  }
+  .practice-item h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 24px;
+    margin: 0 0 6px;
+    color: var(--ink);
+  }
+  .practice-item p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+    max-width: 42ch;
+  }
+  .practice-item .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    align-self: center;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 120px;
+    padding: 40px 0;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  footer .colophon {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink-soft);
+    max-width: 40ch;
+  }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; }
+    .portrait { max-width: 320px; }
+    .meta { grid-template-columns: 1fr 1fr; }
+    .meta > div:nth-child(2) { border-right: none; }
+    .meta > div:nth-child(1), .meta > div:nth-child(2) { border-bottom: 1px solid var(--hairline); }
+    .sec-head { grid-template-columns: 1fr; gap: 20px; }
+    .about-body { grid-template-columns: 1fr; gap: 32px; }
+    .about-cols { columns: 1; }
+    .practice-list { grid-template-columns: 1fr; }
+    .practice-item:nth-child(odd) { border-right: none; padding-right: 0; }
+    .practice-item:nth-child(even) { padding-left: 0; }
+    footer { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+</style>
+
+<div class="page">
+
+  <nav>
+    <div class="brand">Savković <em>&amp; saradnici</em></div>
+    <ul>
+      <li><a href="#o-advokatu">O advokatu</a></li>
+      <li><a href="#praksa">Praksa</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <div class="lang">
+      <span class="active">SR</span>·<span>ЋИР</span>·<span>EN</span>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">Advokatska kancelarija · Beograd · Od 2008</div>
+      <h1>Pravo je <em>zanat</em> pažnje.</h1>
+      <p class="sub">Zastupanje pravnih lica, fizičkih lica i porodica u privrednim, krivičnim i naslednim stvarima. Kancelarija sa sedištem u Beogradu, praksa u sudovima Republike Srbije.</p>
+      <div class="hero-cta">
+        <a href="#kontakt">Zakazivanje konsultacije</a>
+        <span class="divider"></span>
+        <a href="tel:+381113035042">+381 11 30 35 042</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <span class="label">Portret</span>
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="skinA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c8b895"/>
+            <stop offset="1" stop-color="#8a7654"/>
+          </linearGradient>
+          <linearGradient id="suitA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2a2620"/>
+            <stop offset="1" stop-color="#0f0e0c"/>
+          </linearGradient>
+        </defs>
+        <rect width="400" height="500" fill="#E6DFCF"/>
+        <g opacity="0.9">
+          <path d="M 40 500 L 40 380 Q 40 320 120 300 L 160 285 L 200 320 L 240 285 L 280 300 Q 360 320 360 380 L 360 500 Z" fill="url(#suitA)"/>
+          <path d="M 160 285 L 200 320 L 240 285 L 240 340 L 200 380 L 160 340 Z" fill="#F1EBDE"/>
+          <path d="M 195 325 L 205 325 L 208 400 L 200 410 L 192 400 Z" fill="#7A1B1B"/>
+          <ellipse cx="200" cy="200" rx="72" ry="88" fill="url(#skinA)"/>
+          <path d="M 128 175 Q 130 100 200 92 Q 270 100 272 175 Q 272 145 245 132 Q 220 118 200 122 Q 180 118 155 132 Q 128 145 128 175 Z" fill="#1a1712"/>
+          <ellipse cx="176" cy="200" rx="4" ry="5" fill="#0F0E0C"/>
+          <ellipse cx="224" cy="200" rx="4" ry="5" fill="#0F0E0C"/>
+        </g>
+      </svg>
+      <div class="caption">A. Savković,<br>2026</div>
+    </div>
+  </div>
+
+  <dl class="meta">
+    <div>
+      <dt>Imenik AK Beograd</dt>
+      <dd>№ <em>3462</em></dd>
+    </div>
+    <div>
+      <dt>Godina upisa</dt>
+      <dd>2008</dd>
+    </div>
+    <div>
+      <dt>Oblasti prakse</dt>
+      <dd>08</dd>
+    </div>
+    <div>
+      <dt>Jezici</dt>
+      <dd>SR · <em>EN</em> · <em>DE</em></dd>
+    </div>
+  </dl>
+
+  <section id="o-advokatu">
+    <div class="sec-head">
+      <div class="num">§ I &nbsp;— &nbsp;O advokatu</div>
+      <h2>Sedamnaest godina prakse pred sudovima <em>Republike Srbije.</em></h2>
+    </div>
+    <div class="about-body">
+      <p class="lead">"Klijentu ne dugujem obećanje ishoda — dugujem mu pažnju, urednost, i istinu o mogućnostima postupka."</p>
+      <div class="about-cols">
+        <p>Kancelariju je 2008. godine osnovao Aleksandar Savković, po polaganju pravosudnog i advokatskog ispita i upisu u Imenik advokata Advokatske komore Beograda pod brojem 3462. Diplomirao je na Pravnom fakultetu Univerziteta u Beogradu 2004. godine, sa master radom u oblasti privrednog prava.</p>
+        <p>Praksa kancelarije obuhvata privredne sporove, krivične postupke, nasledne stvari, kao i savetovanje u statusnim promenama privrednih društava. Klijenti su domaća i inostrana privredna društva, kao i fizička lica iz Srbije, regiona i dijaspore.</p>
+        <p>Advokat Savković član je Advokatske komore Beograda i Advokatske komore Srbije. Aktivan je u kontinuiranoj edukaciji advokata, sa fokusom na oblast privrednog prava i medijacije. Radni jezici su srpski, engleski i nemački.</p>
+        <p>Kancelarija posluje u skladu sa Kodeksom profesionalne etike advokata i Statutom Advokatske komore Srbije. Sve informacije razmenjene sa klijentom podležu obavezi advokatske tajne.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="praksa">
+    <div class="sec-head">
+      <div class="num">§ II &nbsp;— &nbsp;Oblasti prakse</div>
+      <h2>Osam oblasti u kojima kancelarija <em>redovno postupa.</em></h2>
+    </div>
+    <div class="practice-list">
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Privredno pravo</h3>
+          <p>Osnivanje i statusne promene privrednih društava, ugovori u privredi, privredni sporovi.</p>
+        </div>
+        <span class="code">01</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Krivično pravo</h3>
+          <p>Odbrana u istrazi i pred sudom, zastupanje oštećenih, krivične prijave.</p>
+        </div>
+        <span class="code">02</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Nasledno pravo</h3>
+          <p>Ostavinski postupci, testamenti, izdvajanje iz zaostavštine, sporovi naslednika.</p>
+        </div>
+        <span class="code">03</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Porodično pravo</h3>
+          <p>Razvod braka, vršenje roditeljskog prava, izdržavanje, imovinski odnosi supružnika.</p>
+        </div>
+        <span class="code">04</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Radno pravo</h3>
+          <p>Sporovi iz radnog odnosa, otkazi ugovora o radu, mobing, kolektivni ugovori.</p>
+        </div>
+        <span class="code">05</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Nepokretnosti</h3>
+          <p>Kupoprodaja, uknjižba, poklon, doživotno izdržavanje, građevinsko zemljište.</p>
+        </div>
+        <span class="code">06</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Obligaciono pravo</h3>
+          <p>Ugovori, naknada štete, dužničko-poverilački odnosi, izvršni postupak.</p>
+        </div>
+        <span class="code">07</span>
+      </div>
+      <div class="practice-item">
+        <span class="par">§</span>
+        <div>
+          <h3>Upravno pravo</h3>
+          <p>Postupci pred organima uprave, upravni sporovi, javne nabavke.</p>
+        </div>
+        <span class="code">08</span>
+      </div>
+    </div>
+  </section>
+
+  <footer id="kontakt">
+    <div>
+      <div style="font-family: 'Cormorant Garamond', serif; font-size: 26px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-bottom: 12px;">Advokatska kancelarija Savković</div>
+      <div class="colophon">Kneza Miloša 42, 11000 Beograd, Republika Srbija. Radno vreme: ponedeljak — petak, 09.00 — 17.00 časova, uz prethodno zakazan termin.</div>
+    </div>
+    <div>
+      <div style="color: var(--ink); margin-bottom: 10px;">Telefon</div>
+      +381 11 30 35 042<br>+381 63 802 60 42
+    </div>
+    <div>
+      <div style="color: var(--ink); margin-bottom: 10px;">Email</div>
+      kancelarija@<br>savkovic-advokat.rs
+    </div>
+    <div>
+      <div style="color: var(--ink); margin-bottom: 10px;">Komora</div>
+      AK Beograd № 3462<br>Upis 2008
+    </div>
+  </footer>
+
+</div>
