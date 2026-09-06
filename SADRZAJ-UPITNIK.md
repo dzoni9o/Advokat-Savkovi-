@@ -10,7 +10,7 @@ prepišite tačno onako kako stoje u dokumentima.
 
 | Polje | Vrednost |
 |---|---|
-| Ime i prezime | |
+| Ime i prezime |Lazar Savković|
 | Zvanje na sajtu (npr. „advokat") | |
 | Naziv kancelarije | |
 
@@ -34,7 +34,7 @@ prepišite tačno onako kako stoje u dokumentima.
 | Telefon (fiksni) | |
 | Mobilni / WhatsApp | |
 | E-pošta | |
-| Radno vreme | |
+| Radno vreme |8:00 - 16:00|
 | Domen sajta (ako je kupljen) | |
 
 ## 4. Obrazovanje i ispiti
