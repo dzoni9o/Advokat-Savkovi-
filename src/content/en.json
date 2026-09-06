@@ -98,7 +98,7 @@
       { "label": "Office", "lines": ["TODO: street and number", "TODO: postal code, Kruševac, Serbia"] },
       { "label": "Telephone", "lines": ["TODO: phone"], "tel": null },
       { "label": "Email", "lines": ["TODO: email address"], "email": null },
-      { "label": "Office hours", "lines": ["TODO: office hours"] }
+      { "label": "Office hours", "lines": ["8:00 — 16:00"] }
     ]
   },
 

@@ -98,7 +98,7 @@
       { "label": "Kancelarija", "lines": ["TODO: ulica i broj", "TODO: poštanski broj, Kruševac"] },
       { "label": "Telefon", "lines": ["TODO: telefon"], "tel": null },
       { "label": "Elektronska pošta", "lines": ["TODO: e-adresa"], "email": null },
-      { "label": "Radno vreme", "lines": ["TODO: radno vreme"] }
+      { "label": "Radno vreme", "lines": ["8:00 — 16:00"] }
     ]
   },
 
