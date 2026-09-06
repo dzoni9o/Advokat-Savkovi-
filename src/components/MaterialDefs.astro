@@ -34,42 +34,46 @@
     </filter>
 
     <filter id="veinCream" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.026" numOctaves="5" seed="5" result="t" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.009 0.030" numOctaves="5" seed="5" result="t" />
       <feColorMatrix
         in="t"
         type="matrix"
-        values="0 0 0 0 0.49
-                0 0 0 0 0.45
-                0 0 0 0 0.39
-                8.5 0 0 0 -4.80"
+        values="0 0 0 0 0.46
+                0 0 0 0 0.42
+                0 0 0 0 0.36
+                11.0 0 0 0 -6.40"
       />
     </filter>
 
     <filter id="veinCreamFine" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.010 0.055" numOctaves="3" seed="29" result="t" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.020 0.065" numOctaves="3" seed="29" result="t" />
       <feColorMatrix
         in="t"
         type="matrix"
-        values="0 0 0 0 0.32
-                0 0 0 0 0.29
-                0 0 0 0 0.24
-                12.0 0 0 0 -7.40"
+        values="0 0 0 0 0.30
+                0 0 0 0 0.27
+                0 0 0 0 0.22
+                14.0 0 0 0 -8.80"
       />
     </filter>
 
-    <!-- Wood: high frequency across, low along, giving directional grain -->
+    <!-- Oak: high frequency across, low along, giving directional grain.
+         Mid-brown rather than near-black — on a light panel the grain
+         sits just below the ground, it does not draw on it. -->
     <filter id="grain" x="0" y="0" width="100%" height="100%">
       <feTurbulence type="fractalNoise" baseFrequency="0.9 0.012" numOctaves="4" seed="23" result="t" />
       <feColorMatrix
         in="t"
         type="matrix"
-        values="0 0 0 0 0.10
-                0 0 0 0 0.06
-                0 0 0 0 0.03
-                1.5 0 0 0 -0.45"
+        values="0 0 0 0 0.44
+                0 0 0 0 0.33
+                0 0 0 0 0.19
+                1.6 0 0 0 -0.55"
       />
     </filter>
 
+    <!-- Ornament gold: only ever used on saturated or adjacent-contrast
+         ground (the band, the lozenge, rules), never as lettering. -->
     <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#6E5220" />
       <stop offset="0.22" stop-color="#D4AF37" />
@@ -77,6 +81,18 @@
       <stop offset="0.58" stop-color="#C9A227" />
       <stop offset="0.78" stop-color="#F0DFA0" />
       <stop offset="1" stop-color="#7A5C24" />
+    </linearGradient>
+
+    <!-- Bronze: the legible register. Gold lettering on the cream ground
+         measures 1.65:1 — below even the large-text threshold — so
+         anything shaped like a letter uses this instead. -->
+    <linearGradient id="bronzeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4A3714" />
+      <stop offset="0.20" stop-color="#6E5220" />
+      <stop offset="0.38" stop-color="#8A6A26" />
+      <stop offset="0.52" stop-color="#A07F3A" />
+      <stop offset="0.70" stop-color="#6E5220" />
+      <stop offset="1" stop-color="#4A3714" />
     </linearGradient>
   </defs>
 </svg>

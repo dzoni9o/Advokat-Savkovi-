@@ -1,54 +1,77 @@
 /* =========================================================
    Advokat Savković — design tokens and page styles
-   Visual direction: "Kabinet" — rich material luxury built
-   entirely in code (marble and wood via SVG turbulence, gold
-   as a multi-stop gradient ramp). No photography.
+   Visual direction: "Kabinet" — material luxury built in code
+   (marble and oak via SVG turbulence, gold as a gradient ramp).
+   No photography.
+
+   Polarity: light ground throughout. Gold is ornament only —
+   at 1.65:1 against the cream ground it is unreadable as text,
+   so gilded lettering uses the bronze ramp instead (5.69:1).
    ========================================================= */
 
 :root {
-  --espresso:    #100C08;
-  --marble-dark: #1A1410;
-  --wood:        #2A1D12;
-  --wood-deep:   #1C1309;
-  --cream:       #EDE6DA;
-  --ivory:       #EDE4D3;
-  --ivory-soft:  #C4B9A4;
-  --ivory-mute:  #8A7F6C;
+  /* Grounds */
+  --ground:      #EAE3D5;  /* primary cream marble */
+  --stone:       #DED5C4;  /* deeper stone, used for rhythm bands */
+  --tile:        #F3EEE3;  /* raised panels and tiles */
+  --oak:         #D8C9AC;  /* light oak panel */
+  --oak-deep:    #C6B492;
 
-  --gold-deep:   #6E5220;
-  --gold:        #D4AF37;
-  --gold-light:  #F7ECC0;
+  /* Ink — all measured against --ground */
+  --ink:         #2A241B;  /* 12.03 : body and headings      */
+  --ink-2:       #4A4238;  /*  7.73 : secondary prose        */
+  --ink-mute:    #6A5F4C;  /*  4.90 : labels on --ground     */
+  --ink-mute-2:  #5A5142;  /*  5.9  : labels on --stone      */
 
-  /* The dark/light alternation is what makes this read as metal
-     rather than as flat yellow. */
+  /* Bronze — the legible register of gold */
+  --bronze:      #6E5220;  /*  5.69 on --ground */
+  --bronze-2:    #7A5C24;  /*  4.86 on --ground */
+  --bronze-deep: #5E451A;  /*  5.50 on --oak — bronze on the darker grounds */
+
+  /* Hairlines */
+  --hair:        rgba(110, 82, 32, 0.22);
+  --hair-strong: rgba(110, 82, 32, 0.42);
+
+  /* Ornament gold — never used for text.
+     The dark/light alternation is what makes it read as metal. */
   --gold-ramp: linear-gradient(135deg,
     #6E5220 0%, #A87F26 12%, #D4AF37 26%, #F7ECC0 38%,
     #E2C566 48%, #B08A2E 62%, #F0DFA0 76%, #8A6A26 90%, #6E5220 100%);
   --gold-rule: linear-gradient(90deg,
-    rgba(110,82,32,0) 0%, #8A6A26 12%, #D4AF37 30%, #F7ECC0 50%,
-    #D4AF37 70%, #8A6A26 88%, rgba(110,82,32,0) 100%);
+    rgba(110,82,32,0) 0%, #8A6A26 12%, #C9A227 30%, #E8D08A 50%,
+    #C9A227 70%, #8A6A26 88%, rgba(110,82,32,0) 100%);
 
-  color-scheme: dark;
+  /* Bronze ramp — same metal treatment, legible register */
+  --bronze-ramp: linear-gradient(135deg,
+    #4A3714 0%, #6E5220 16%, #8A6A26 32%, #A07F3A 46%,
+    #7A5C24 62%, #5A431A 80%, #6E5220 100%);
+
+  /* Shadows are warm and shallow; black shadow on cream reads as dirt */
+  --lift-sm: 0 2px 10px rgba(74, 58, 32, 0.08);
+  --lift:    0 10px 34px rgba(74, 58, 32, 0.13);
+  --lift-lg: 0 26px 70px rgba(74, 58, 32, 0.16);
+
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--espresso);
-  color: var(--ivory);
+  background: var(--ground);
+  color: var(--ink);
   font-family: 'Jost', system-ui, sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-::selection { background: var(--gold); color: var(--espresso); }
+::selection { background: var(--bronze); color: var(--tile); }
 a { color: inherit; text-decoration: none; }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--bronze);
   outline-offset: 3px;
 }
 
@@ -59,16 +82,16 @@ a { color: inherit; text-decoration: none; }
 .todo {
   display: inline-block;
   min-width: 5ch;
-  padding: 0.1em 0.7em;
-  border: 1px dashed rgba(212,175,55,0.55);
+  padding: 0.12em 0.7em;
+  border: 1px dashed rgba(110, 82, 32, 0.55);
   border-radius: 2px;
-  background: rgba(212,175,55,0.07);
-  color: rgba(212,175,55,0.75);
+  background: rgba(110, 82, 32, 0.07);
+  color: var(--bronze);
   font-family: 'Jost', sans-serif;
-  font-size: 0.72em;
+  font-size: 0.74em;
   font-weight: 400;
   font-style: normal;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   vertical-align: middle;
   line-height: 1.7;
@@ -82,37 +105,28 @@ a { color: inherit; text-decoration: none; }
   display: block;
   pointer-events: none;
 }
-.vignette {
-  position: absolute; inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 120% 90% at 50% 40%,
-    transparent 30%, rgba(8,5,3,0.55) 78%, rgba(8,5,3,0.88) 100%);
-}
 .inner { position: relative; z-index: 2; }
 
+/* Gilded lettering. Bronze, not gold — see the file header. */
 .gilt {
-  background: var(--gold-ramp);
+  background: var(--bronze-ramp);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 1px 0 rgba(0,0,0,0.55)) drop-shadow(0 2px 6px rgba(0,0,0,0.4));
 }
 
 .framed {
-  border: 1px solid rgba(212,175,55,0.42);
-  box-shadow:
-    inset 0 0 0 1px rgba(247,236,192,0.10),
-    inset 0 0 60px rgba(0,0,0,0.55),
-    0 24px 60px rgba(0,0,0,0.5);
+  border: 1px solid var(--hair-strong);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), var(--lift);
 }
 
 .eyebrow {
   font-family: 'Jost', sans-serif;
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.42em;
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--bronze);
 }
 
 .ornament { display: flex; align-items: center; gap: 16px; justify-content: center; }
@@ -123,7 +137,7 @@ a { color: inherit; text-decoration: none; }
   width: 9px; height: 9px;
   background: var(--gold-ramp);
   transform: rotate(45deg);
-  box-shadow: 0 0 10px rgba(212,175,55,0.5);
+  box-shadow: var(--lift-sm);
 }
 
 /* ---------- Nav ----------
@@ -133,51 +147,64 @@ a { color: inherit; text-decoration: none; }
   position: absolute; top: 0; left: 0; right: 0; z-index: 40;
   display: grid; grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  padding: 28px clamp(20px, 4vw, 56px);
+  padding: 26px clamp(20px, 4vw, 56px);
 }
-.site-nav .links { display: flex; gap: 34px; }
+.site-nav .links { display: flex; gap: 30px; }
 .site-nav a,
 .site-nav .lang span,
 .site-nav .lang a {
   font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 400;
-  letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--ivory-soft);
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-2);
   transition: color .25s;
 }
-.site-nav a:hover { color: var(--gold-light); }
+.site-nav a:hover { color: var(--bronze); }
 .site-nav .mono {
   font-family: 'Cinzel', serif;
-  font-weight: 600; font-size: 15px;
-  letter-spacing: 0.36em; text-indent: 0.36em;
+  font-weight: 700; font-size: 16px;
+  letter-spacing: 0.3em; text-indent: 0.3em;
 }
-.site-nav .lang { justify-self: end; display: flex; gap: 10px; align-items: center; }
-.site-nav .lang .on { color: var(--gold); }
-.site-nav .lang .sep { color: rgba(212,175,55,0.35); }
+/* The bronze ramp is only safe at display sizes: its lightest stop
+   measures 2.94:1, fine for the 132px wordmark but not for a 16px
+   monogram. Small gilded text takes the solid bronze instead. */
+.site-nav .mono.gilt {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: var(--bronze);
+}
+.site-nav .lang { justify-self: end; display: flex; gap: 9px; align-items: center; }
+.site-nav .lang .on { color: var(--bronze); font-weight: 500; }
+.site-nav .lang .sep { color: var(--hair-strong); }
 
 /* ---------- Hero ---------- */
-.hero { min-height: 92vh; display: flex; align-items: center; justify-content: center; padding: 130px 20px 90px; }
+.hero {
+  min-height: 88vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 130px 20px 90px;
+}
 .hero .plaque {
   position: relative;
   max-width: 1080px; width: 100%;
-  padding: clamp(48px, 7vw, 96px) clamp(24px, 5vw, 80px);
+  padding: clamp(44px, 6.5vw, 92px) clamp(24px, 5vw, 80px);
   text-align: center;
-  border: 1px solid rgba(212,175,55,0.34);
+  /* Opaque: text must never sit on live veining. */
+  background: #F2ECE1;
+  border: 1px solid var(--hair-strong);
   box-shadow:
-    inset 0 0 0 1px rgba(0,0,0,0.6),
-    inset 0 0 0 9px rgba(212,175,55,0.10),
-    inset 0 0 120px rgba(0,0,0,0.6),
-    0 40px 100px rgba(0,0,0,0.65);
-  background: linear-gradient(180deg, rgba(36,28,21,0.30) 0%, rgba(10,7,4,0.42) 100%);
+    inset 0 0 0 8px rgba(201, 162, 39, 0.10),
+    inset 0 0 0 9px rgba(110, 82, 32, 0.16),
+    var(--lift-lg);
 }
-.hero .crest { margin: 0 auto 34px; display: block; }
+.hero .crest { margin: 0 auto 32px; display: block; }
 .hero h1 {
   font-family: 'Cinzel', serif;
-  font-weight: 600;
+  font-weight: 700;
   font-size: clamp(46px, 8.4vw, 132px);
   line-height: 1.02;
-  letter-spacing: 0.06em; text-indent: 0.06em;
-  margin-bottom: 26px;
+  letter-spacing: 0.05em; text-indent: 0.05em;
+  margin-bottom: 24px;
 }
 .hero .sub {
   font-family: 'Bodoni Moda', serif;
@@ -185,44 +212,53 @@ a { color: inherit; text-decoration: none; }
   font-style: italic; font-weight: 400;
   font-size: clamp(19px, 2.3vw, 30px);
   line-height: 1.45;
-  color: var(--ivory);
-  max-width: 34ch; margin: 0 auto 34px;
+  color: var(--ink-2);
+  max-width: 34ch; margin: 0 auto 32px;
 }
 .hero .est {
   display: flex; justify-content: center; gap: clamp(20px, 4vw, 56px);
   flex-wrap: wrap;
   margin-top: 30px; padding-top: 26px;
-  border-top: 1px solid rgba(212,175,55,0.22);
+  border-top: 1px solid var(--hair);
 }
 .hero .est > div {
   font-family: 'Jost', sans-serif;
-  font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--ivory-mute);
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mute);
 }
 .hero .est > div b {
-  display: block; margin-top: 7px;
+  display: block; margin-top: 8px;
   font-family: 'Cinzel', serif; font-weight: 600;
-  font-size: 15px; letter-spacing: 0.16em;
-  color: var(--gold);
+  font-size: 16px; letter-spacing: 0.1em;
+  text-transform: none;
+  color: var(--bronze);
 }
 
-/* ---------- Gold band ---------- */
+/* ---------- Gold band ----------
+   The one saturated element on the page. Sentence case: a full
+   sentence in caps is markedly slower to read. */
 .band {
   position: relative;
   background: var(--gold-ramp);
-  padding: 15px 20px;
+  padding: 16px 20px;
   text-align: center;
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.4), inset 0 -2px 6px rgba(0,0,0,0.35), 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: inset 0 2px 5px rgba(74,58,32,0.28), inset 0 -2px 5px rgba(74,58,32,0.22);
 }
 .band span {
   font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.4em; text-transform: uppercase;
+  font-size: 14px; font-weight: 500;
+  letter-spacing: 0.06em;
   color: #2A1D06;
 }
-.band .todo { border-color: rgba(42,29,6,0.6); background: rgba(42,29,6,0.10); color: #2A1D06; }
+.band .todo {
+  border-color: rgba(42,29,6,0.55);
+  background: rgba(42,29,6,0.08);
+  color: #2A1D06;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
 
-/* ---------- Manifest ---------- */
+/* ---------- Manifest (stone band) ---------- */
 .manifest { padding: clamp(90px, 12vh, 150px) 20px; }
 .manifest .inner { max-width: 1000px; margin: 0 auto; text-align: center; }
 .manifest .quote {
@@ -230,134 +266,137 @@ a { color: inherit; text-decoration: none; }
   font-variation-settings: "opsz" 96;
   font-style: italic; font-weight: 400;
   font-size: clamp(27px, 4vw, 56px);
-  line-height: 1.24;
-  color: #1C1710;
-  margin: 34px auto;
+  line-height: 1.26;
+  color: var(--ink);
+  margin: 32px auto;
   max-width: 24ch;
 }
-.manifest .quote b { font-weight: 600; font-style: italic; color: #6E5220; }
+.manifest .quote b { font-weight: 600; font-style: italic; color: var(--bronze); }
 .manifest .attrib {
   margin-top: 26px;
   font-family: 'Jost', sans-serif;
-  font-size: 11px; letter-spacing: 0.34em; text-transform: uppercase;
-  color: #6A5F4C;
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-mute-2);
 }
-.manifest .eyebrow { color: #7A5C24; }
-.manifest .ornament::before, .manifest .ornament::after {
-  background: linear-gradient(90deg, rgba(110,82,32,0) 0%, #B08A2E 40%, #6E5220 100%);
+.manifest .todo {
+  border-color: rgba(110,82,32,0.5);
+  background: rgba(110,82,32,0.08);
 }
-.manifest .ornament::after { transform: scaleX(-1); }
-.manifest .todo { border-color: rgba(110,82,32,0.6); background: rgba(110,82,32,0.08); color: #6E5220; }
 
-/* ---------- About ---------- */
+/* ---------- About (oak panel) ---------- */
 .about { padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 56px); }
 .about .inner { max-width: 1280px; margin: 0 auto; }
-.about .head { text-align: center; margin-bottom: 60px; }
+.about .head { text-align: center; margin-bottom: 56px; }
+/* This heading sits on the oak ground, not on the panel, where the
+   standard bronze only reaches 4.45:1. */
+.about .head .eyebrow { color: var(--bronze-deep); }
 .about h2 {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 96;
   font-weight: 500;
   font-size: clamp(38px, 5.4vw, 78px);
-  line-height: 1.06;
-  margin: 22px 0 0;
+  line-height: 1.08;
+  margin: 20px 0 0;
+  color: var(--ink);
 }
-.about h2 i { font-style: italic; }
+.about h2 i { font-style: italic; color: var(--bronze-deep); }
 
 .panel {
   display: grid;
   grid-template-columns: 1.15fr 1px 1fr;
   gap: clamp(30px, 4vw, 64px);
   padding: clamp(32px, 4.5vw, 64px);
-  background: linear-gradient(165deg, rgba(58,40,24,0.55) 0%, rgba(18,12,7,0.72) 100%);
+  background: var(--tile);
 }
 .panel .divider-v {
-  background: linear-gradient(180deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.45) 50%, rgba(212,175,55,0) 100%);
+  background: linear-gradient(180deg, rgba(110,82,32,0) 0%, rgba(110,82,32,0.35) 50%, rgba(110,82,32,0) 100%);
 }
 .panel h3 {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 48;
   font-style: italic; font-weight: 500;
   font-size: clamp(23px, 2.6vw, 34px);
-  line-height: 1.22;
-  margin: 16px 0 22px;
-  color: var(--ivory);
+  line-height: 1.24;
+  margin: 14px 0 22px;
+  color: var(--ink);
 }
 .panel p {
-  color: var(--ivory-soft);
-  font-size: 15px; line-height: 1.78;
-  margin-bottom: 15px; max-width: 46ch;
+  color: var(--ink-2);
+  font-size: 16px; line-height: 1.8;
+  margin-bottom: 16px; max-width: 46ch;
 }
 .panel .facts { margin-top: 28px; display: flex; flex-direction: column; }
 .panel .facts > div {
   display: grid; grid-template-columns: 1fr auto; gap: 18px;
   padding: 13px 0; align-items: baseline;
-  border-bottom: 1px solid rgba(212,175,55,0.16);
+  border-bottom: 1px solid var(--hair);
 }
 .panel .facts dt {
   font-family: 'Jost', sans-serif;
-  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
-  color: var(--ivory-mute);
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mute);
 }
 .panel .facts dd {
-  font-family: 'Cinzel', serif; font-weight: 500;
-  font-size: 15px; letter-spacing: 0.06em;
-  color: var(--gold); text-align: right;
+  font-family: 'Cinzel', serif; font-weight: 600;
+  font-size: 16px; letter-spacing: 0.05em;
+  color: var(--bronze); text-align: right;
 }
 
 /* ---------- Practice ---------- */
 .practice { padding: clamp(90px, 12vh, 150px) clamp(20px, 4vw, 56px); }
 .practice .inner { max-width: 1360px; margin: 0 auto; }
-.practice .head { text-align: center; margin-bottom: 56px; }
+.practice .head { text-align: center; margin-bottom: 52px; }
 .practice h2 {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 96;
   font-weight: 500;
   font-size: clamp(38px, 5.4vw, 78px);
-  line-height: 1.06;
-  margin: 22px 0 0;
+  line-height: 1.08;
+  margin: 20px 0 0;
+  color: var(--ink);
 }
-.practice h2 i { font-style: italic; }
+.practice h2 i { font-style: italic; color: var(--bronze); }
 
 .tiles {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: rgba(212,175,55,0.20);
-  border: 1px solid rgba(212,175,55,0.30);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.5);
+  background: var(--hair-strong);
+  border: 1px solid var(--hair-strong);
+  box-shadow: var(--lift-lg);
 }
 .tile {
   position: relative;
-  background: linear-gradient(165deg, rgba(40,31,23,0.94) 0%, rgba(14,10,6,0.96) 100%);
-  padding: 34px 26px 30px;
+  background: var(--tile);
+  padding: 32px 26px 28px;
   min-height: 254px;
   display: flex; flex-direction: column;
-  transition: background .35s ease;
+  transition: background .3s ease;
 }
-.tile:hover { background: linear-gradient(165deg, rgba(58,44,28,0.96) 0%, rgba(22,15,8,0.97) 100%); }
+.tile:hover { background: #FBF7EF; }
 .tile .numeral {
   font-family: 'Cinzel', serif; font-weight: 700;
   font-size: 28px; letter-spacing: 0.08em;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .tile h3 {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 48;
   font-weight: 500; font-size: 25px;
-  line-height: 1.14; color: var(--ivory);
-  margin-bottom: 14px;
+  line-height: 1.16; color: var(--ink);
+  margin-bottom: 12px;
 }
 .tile p {
-  font-size: 13.5px; line-height: 1.62;
-  color: var(--ivory-mute);
+  font-size: 15px; line-height: 1.68;
+  color: var(--ink-2);
   margin-bottom: 18px; flex: 1;
 }
 .tile .lex {
   font-family: 'Jost', sans-serif;
-  font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: rgba(212,175,55,0.72);
+  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-mute);
   padding-top: 13px;
-  border-top: 1px solid rgba(212,175,55,0.18);
+  border-top: 1px solid var(--hair);
 }
 
 /* ---------- Contact ---------- */
@@ -365,86 +404,90 @@ a { color: inherit; text-decoration: none; }
 .contact .inner { max-width: 1280px; margin: 0 auto; }
 .contact .vault {
   padding: clamp(40px, 5.5vw, 80px);
-  background: linear-gradient(165deg, rgba(34,26,18,0.55) 0%, rgba(8,5,3,0.75) 100%);
+  background: var(--tile);
   display: grid; grid-template-columns: 1fr 1fr;
   gap: clamp(36px, 5vw, 80px);
   align-items: center;
 }
-.contact .crest-sm { margin-bottom: 26px; }
+.contact .crest-sm { margin-bottom: 24px; }
 .contact h2 {
-  font-family: 'Cinzel', serif; font-weight: 600;
+  font-family: 'Cinzel', serif; font-weight: 700;
   font-size: clamp(32px, 4.6vw, 60px);
-  letter-spacing: 0.06em; text-indent: 0.06em;
+  letter-spacing: 0.05em; text-indent: 0.05em;
   line-height: 1.1; margin-bottom: 20px;
 }
 .contact .lede {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 48;
-  font-style: italic; font-size: 20px; line-height: 1.5;
-  color: var(--ivory-soft); max-width: 32ch; margin-bottom: 34px;
+  font-style: italic; font-size: 21px; line-height: 1.55;
+  color: var(--ink-2); max-width: 32ch; margin-bottom: 32px;
 }
 .cta {
   display: inline-block;
   padding: 17px 40px;
   background: var(--gold-ramp);
-  color: #241802;
+  color: #2A1D06;
   font-family: 'Jost', sans-serif;
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 0.34em; text-transform: uppercase;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 5px rgba(0,0,0,0.3);
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  box-shadow: var(--lift), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -2px 4px rgba(74,58,32,0.2);
   transition: transform .25s, box-shadow .25s;
 }
-.cta:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.5); }
+.cta:hover { transform: translateY(-2px); box-shadow: var(--lift-lg), inset 0 1px 0 rgba(255,255,255,0.55); }
 .cta[aria-disabled="true"] {
   background: none;
-  border: 1px dashed rgba(212,175,55,0.55);
-  color: rgba(212,175,55,0.75);
+  border: 1px dashed rgba(110,82,32,0.55);
+  color: var(--bronze);
   box-shadow: none;
   cursor: not-allowed;
 }
 .cta[aria-disabled="true"]:hover { transform: none; box-shadow: none; }
 
-.coords { display: flex; flex-direction: column; gap: 26px; }
-.coords > div { padding-bottom: 20px; border-bottom: 1px solid rgba(212,175,55,0.20); }
+.coords { display: flex; flex-direction: column; gap: 24px; }
+.coords > div { padding-bottom: 20px; border-bottom: 1px solid var(--hair); }
 .coords > div:last-child { border-bottom: none; }
 .coords dt {
   font-family: 'Jost', sans-serif;
-  font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--ivory-mute); margin-bottom: 10px;
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mute); margin-bottom: 9px;
 }
 .coords dd {
   font-family: 'Bodoni Moda', serif;
   font-variation-settings: "opsz" 32;
-  font-size: 19px; line-height: 1.45; color: var(--ivory);
+  font-size: 20px; line-height: 1.5; color: var(--ink);
 }
-.coords dd a:hover { color: var(--gold-light); }
+.coords dd a { border-bottom: 1px solid var(--hair); }
+.coords dd a:hover { color: var(--bronze); border-color: var(--bronze); }
 
 .site-footer {
-  max-width: 1280px; margin: 60px auto 0;
+  max-width: 1280px; margin: 56px auto 0;
   padding-top: 24px;
-  border-top: 1px solid rgba(212,175,55,0.18);
+  border-top: 1px solid var(--hair);
   display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
   font-family: 'Jost', sans-serif;
-  font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase;
-  color: var(--ivory-mute);
+  /* Sentence case: the right-hand cell is a full sentence, and caps
+     slow a sentence down measurably. */
+  font-size: 13px; letter-spacing: 0.04em;
+  /* Sits on --stone, where --ink-mute only reaches 4.30:1. */
+  color: var(--ink-mute-2);
 }
 .site-footer .c { text-align: center; }
 .site-footer .r { text-align: right; }
-.site-footer b { color: var(--gold); font-weight: 400; }
+.site-footer b { color: var(--bronze); font-weight: 500; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
   .tiles { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 880px) {
-  .site-nav { grid-template-columns: 1fr auto; gap: 14px; padding: 20px; }
+  .site-nav { grid-template-columns: 1fr auto; gap: 14px; padding: 18px 20px; }
   .site-nav .links { display: none; }
   .site-nav .mono { justify-self: start; }
-  .hero { min-height: auto; padding: 100px 16px 70px; }
+  .hero { min-height: auto; padding: 96px 16px 70px; }
   .panel { grid-template-columns: 1fr; gap: 34px; }
   .panel .divider-v {
     height: 1px; width: 100%;
-    background: linear-gradient(90deg, rgba(212,175,55,0) 0%, rgba(212,175,55,0.45) 50%, rgba(212,175,55,0) 100%);
+    background: linear-gradient(90deg, rgba(110,82,32,0) 0%, rgba(110,82,32,0.35) 50%, rgba(110,82,32,0) 100%);
   }
   .contact .vault { grid-template-columns: 1fr; }
   .site-footer { grid-template-columns: 1fr; gap: 12px; }

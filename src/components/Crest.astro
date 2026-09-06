@@ -8,6 +8,9 @@ interface Props {
 }
 
 const { initials, width = 86, height = 104, class: className = '', detailed = true } = Astro.props;
+
+// Bronze throughout: on the cream ground the gold ramp measures 1.65:1,
+// so the monogram would be invisible. Reads as an engraved bronze seal.
 ---
 <svg
   class={className}
@@ -20,14 +23,14 @@ const { initials, width = 86, height = 104, class: className = '', detailed = tr
   <path
     d="M43 3 L81 17 V52 C81 76 63 92 43 101 C23 92 5 76 5 52 V17 Z"
     fill="none"
-    stroke="url(#goldGrad)"
-    stroke-width="1.6"
+    stroke="url(#bronzeGrad)"
+    stroke-width="1.8"
   />
   {detailed && (
     <path
       d="M43 10 L75 21 V52 C75 72 60 86 43 94 C26 86 11 72 11 52 V21 Z"
-      fill="rgba(212,175,55,0.06)"
-      stroke="rgba(212,175,55,0.35)"
+      fill="rgba(110,82,32,0.05)"
+      stroke="rgba(110,82,32,0.32)"
       stroke-width="0.8"
     />
   )}
@@ -37,13 +40,13 @@ const { initials, width = 86, height = 104, class: className = '', detailed = tr
     text-anchor="middle"
     font-family="Cinzel, serif"
     font-size="28"
-    font-weight="600"
-    fill="url(#goldGrad)"
+    font-weight="700"
+    fill="url(#bronzeGrad)"
     letter-spacing="1">{initials}</text>
   {detailed && (
     <>
-      <path d="M28 70 H58" stroke="url(#goldGrad)" stroke-width="1" />
-      <path d="M43 74 l4 4 -4 4 -4 -4 Z" fill="url(#goldGrad)" />
+      <path d="M28 70 H58" stroke="url(#bronzeGrad)" stroke-width="1" />
+      <path d="M43 74 l4 4 -4 4 -4 -4 Z" fill="url(#bronzeGrad)" />
     </>
   )}
 </svg>
