@@ -1,5 +1,4 @@
 ---
-import Crest from './Crest.astro';
 import Field from './Field.astro';
 import { isTodo } from '../lib/content';
 
@@ -11,7 +10,6 @@ interface Coord {
 }
 
 interface Props {
-  crestInitials: string;
   contact: {
     heading: string;
     lede: string;
@@ -27,7 +25,7 @@ interface Props {
   };
 }
 
-const { crestInitials, contact, footer } = Astro.props;
+const { contact, footer } = Astro.props;
 
 // The call to action only becomes a real mailto: once an address exists.
 // Until then it renders inert rather than pointing at nothing.
@@ -43,7 +41,6 @@ const ctaEmail = contact.coords.find((c) => c.email)?.email ?? null;
   <div class="inner">
     <div class="vault framed">
       <div>
-        <Crest initials={crestInitials} width={58} height={70} class="crest-sm" detailed={false} />
         <h2 class="gilt">{contact.heading}</h2>
         <p class="lede"><Field value={contact.lede} /></p>
 

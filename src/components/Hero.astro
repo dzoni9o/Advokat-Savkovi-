@@ -1,6 +1,5 @@
 ---
 import Nav from './Nav.astro';
-import Crest from './Crest.astro';
 import Field from './Field.astro';
 import type { Locale } from '../lib/content';
 
@@ -8,7 +7,6 @@ interface Props {
   locale: Locale;
   nav: { monogram: string; links: { href: string; label: string }[] };
   hero: {
-    crestInitials: string;
     name: string;
     tagline: string;
     facts: { label: string; value: string }[];
@@ -27,7 +25,6 @@ const { locale, nav, hero } = Astro.props;
   <Nav locale={locale} nav={nav} />
 
   <div class="inner plaque">
-    <Crest initials={hero.crestInitials} class="crest" />
 
     <h1 class="gilt">{hero.name}</h1>
     <p class="sub"><Field value={hero.tagline} /></p>

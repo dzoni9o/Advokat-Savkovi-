@@ -1,4 +1,5 @@
 ---
+import '../styles/fonts.css';
 import '../styles/global.css';
 import MaterialDefs from '../components/MaterialDefs.astro';
 import { LOCALES, LOCALE_HREFLANG, isComplete, countTodos, isTodo, type Locale } from '../lib/content';
@@ -63,12 +64,12 @@ if (streetLine && !isTodo(streetLine)) {
     <meta property="og:url" content={canonical.href} />
     <meta property="og:locale" content={meta.ogLocale} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Cinzel:wght@400..700&family=Jost:wght@300;400;500&display=swap"
-    />
+    <!-- The wordmark is the largest thing painted first, and "Savković"
+         needs latin-ext for the ć, so both of its subsets are preloaded. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="/fonts/BricolageGrotesque-latin-normal-300_800.woff2" />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href="/fonts/BricolageGrotesque-latin-ext-normal-300_800.woff2" />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
   </head>
@@ -97,7 +98,7 @@ if (streetLine && !isTodo(streetLine)) {
         background: #2A241B;
         border: 1px dashed rgba(224, 196, 128, 0.55);
         color: #E6DCC6;
-        font-family: 'Jost', system-ui, sans-serif;
+        font-family: 'Manrope', system-ui, sans-serif;
         font-size: 12px;
         letter-spacing: 0.04em;
         line-height: 1.6;

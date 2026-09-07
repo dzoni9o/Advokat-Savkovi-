@@ -60,7 +60,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--ground);
   color: var(--ink);
-  font-family: 'Jost', system-ui, sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.65;
@@ -87,7 +87,7 @@ a { color: inherit; text-decoration: none; }
   border-radius: 2px;
   background: rgba(110, 82, 32, 0.07);
   color: var(--bronze);
-  font-family: 'Jost', sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 0.74em;
   font-weight: 400;
   font-style: normal;
@@ -121,7 +121,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .eyebrow {
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-weight: 500;
   font-size: 12px;
   letter-spacing: 0.2em;
@@ -153,7 +153,7 @@ a { color: inherit; text-decoration: none; }
 .site-nav a,
 .site-nav .lang span,
 .site-nav .lang a {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 12px; font-weight: 500;
   letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--ink-2);
@@ -161,7 +161,7 @@ a { color: inherit; text-decoration: none; }
 }
 .site-nav a:hover { color: var(--bronze); }
 .site-nav .mono {
-  font-family: 'Cinzel', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-weight: 700; font-size: 16px;
   letter-spacing: 0.3em; text-indent: 0.3em;
 }
@@ -180,14 +180,14 @@ a { color: inherit; text-decoration: none; }
 
 /* ---------- Hero ---------- */
 .hero {
-  min-height: 88vh;
+  min-height: 78vh;
   display: flex; align-items: center; justify-content: center;
   padding: 130px 20px 90px;
 }
 .hero .plaque {
   position: relative;
   max-width: 1080px; width: 100%;
-  padding: clamp(44px, 6.5vw, 92px) clamp(24px, 5vw, 80px);
+  padding: clamp(40px, 4.6vw, 62px) clamp(24px, 5vw, 80px);
   text-align: center;
   /* Opaque: text must never sit on live veining. */
   background: #F2ECE1;
@@ -199,17 +199,16 @@ a { color: inherit; text-decoration: none; }
 }
 .hero .crest { margin: 0 auto 32px; display: block; }
 .hero h1 {
-  font-family: 'Cinzel', serif;
-  font-weight: 700;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
+  font-weight: 800;
   font-size: clamp(46px, 8.4vw, 132px);
   line-height: 1.02;
-  letter-spacing: 0.05em; text-indent: 0.05em;
+  letter-spacing: -0.045em; 
   margin-bottom: 24px;
 }
 .hero .sub {
-  font-family: 'Bodoni Moda', serif;
-  font-variation-settings: "opsz" 72;
-  font-style: italic; font-weight: 400;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 400;
   font-size: clamp(19px, 2.3vw, 30px);
   line-height: 1.45;
   color: var(--ink-2);
@@ -222,13 +221,13 @@ a { color: inherit; text-decoration: none; }
   border-top: 1px solid var(--hair);
 }
 .hero .est > div {
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--ink-mute);
 }
 .hero .est > div b {
   display: block; margin-top: 8px;
-  font-family: 'Cinzel', serif; font-weight: 600;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace; font-weight: 600;
   font-size: 16px; letter-spacing: 0.1em;
   text-transform: none;
   color: var(--bronze);
@@ -245,7 +244,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: inset 0 2px 5px rgba(74,58,32,0.28), inset 0 -2px 5px rgba(74,58,32,0.22);
 }
 .band span {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 14px; font-weight: 500;
   letter-spacing: 0.06em;
   color: #2A1D06;
@@ -262,19 +261,19 @@ a { color: inherit; text-decoration: none; }
 .manifest { padding: clamp(90px, 12vh, 150px) 20px; }
 .manifest .inner { max-width: 1000px; margin: 0 auto; text-align: center; }
 .manifest .quote {
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-variation-settings: "opsz" 96;
-  font-style: italic; font-weight: 400;
+  font-weight: 400;
   font-size: clamp(27px, 4vw, 56px);
   line-height: 1.26;
   color: var(--ink);
   margin: 32px auto;
   max-width: 24ch;
 }
-.manifest .quote b { font-weight: 600; font-style: italic; color: var(--bronze); }
+.manifest .quote b { font-weight: 700; color: var(--bronze); }
 .manifest .attrib {
   margin-top: 26px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--ink-mute-2);
 }
@@ -291,7 +290,7 @@ a { color: inherit; text-decoration: none; }
    standard bronze only reaches 4.45:1. */
 .about .head .eyebrow { color: var(--bronze-deep); }
 .about h2 {
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-variation-settings: "opsz" 96;
   font-weight: 500;
   font-size: clamp(38px, 5.4vw, 78px);
@@ -299,7 +298,7 @@ a { color: inherit; text-decoration: none; }
   margin: 20px 0 0;
   color: var(--ink);
 }
-.about h2 i { font-style: italic; color: var(--bronze-deep); }
+.about h2 i { font-style: normal; font-weight: 500; color: var(--bronze-deep); }
 
 .panel {
   display: grid;
@@ -312,9 +311,9 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(110,82,32,0) 0%, rgba(110,82,32,0.35) 50%, rgba(110,82,32,0) 100%);
 }
 .panel h3 {
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-variation-settings: "opsz" 48;
-  font-style: italic; font-weight: 500;
+  font-weight: 500;
   font-size: clamp(23px, 2.6vw, 34px);
   line-height: 1.24;
   margin: 14px 0 22px;
@@ -332,12 +331,12 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--hair);
 }
 .panel .facts dt {
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--ink-mute);
 }
 .panel .facts dd {
-  font-family: 'Cinzel', serif; font-weight: 600;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace; font-weight: 600;
   font-size: 16px; letter-spacing: 0.05em;
   color: var(--bronze); text-align: right;
 }
@@ -347,7 +346,7 @@ a { color: inherit; text-decoration: none; }
 .practice .inner { max-width: 1360px; margin: 0 auto; }
 .practice .head { text-align: center; margin-bottom: 52px; }
 .practice h2 {
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-variation-settings: "opsz" 96;
   font-weight: 500;
   font-size: clamp(38px, 5.4vw, 78px);
@@ -355,7 +354,7 @@ a { color: inherit; text-decoration: none; }
   margin: 20px 0 0;
   color: var(--ink);
 }
-.practice h2 i { font-style: italic; color: var(--bronze); }
+.practice h2 i { font-style: normal; font-weight: 500; color: var(--bronze); }
 
 .tiles {
   display: grid;
@@ -375,12 +374,12 @@ a { color: inherit; text-decoration: none; }
 }
 .tile:hover { background: #FBF7EF; }
 .tile .numeral {
-  font-family: 'Cinzel', serif; font-weight: 700;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif; font-weight: 800;
   font-size: 28px; letter-spacing: 0.08em;
   margin-bottom: 14px;
 }
 .tile h3 {
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif;
   font-variation-settings: "opsz" 48;
   font-weight: 500; font-size: 25px;
   line-height: 1.16; color: var(--ink);
@@ -392,7 +391,7 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 18px; flex: 1;
 }
 .tile .lex {
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--ink-mute);
   padding-top: 13px;
@@ -411,15 +410,14 @@ a { color: inherit; text-decoration: none; }
 }
 .contact .crest-sm { margin-bottom: 24px; }
 .contact h2 {
-  font-family: 'Cinzel', serif; font-weight: 700;
+  font-family: 'BricolageGrotesque', system-ui, sans-serif; font-weight: 800;
   font-size: clamp(32px, 4.6vw, 60px);
-  letter-spacing: 0.05em; text-indent: 0.05em;
+  letter-spacing: -0.04em; 
   line-height: 1.1; margin-bottom: 20px;
 }
 .contact .lede {
-  font-family: 'Bodoni Moda', serif;
-  font-variation-settings: "opsz" 48;
-  font-style: italic; font-size: 21px; line-height: 1.55;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: 21px; line-height: 1.55;
   color: var(--ink-2); max-width: 32ch; margin-bottom: 32px;
 }
 .cta {
@@ -427,7 +425,7 @@ a { color: inherit; text-decoration: none; }
   padding: 17px 40px;
   background: var(--gold-ramp);
   color: #2A1D06;
-  font-family: 'Jost', sans-serif;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 13px; font-weight: 500;
   letter-spacing: 0.2em; text-transform: uppercase;
   box-shadow: var(--lift), inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -2px 4px rgba(74,58,32,0.2);
@@ -447,13 +445,12 @@ a { color: inherit; text-decoration: none; }
 .coords > div { padding-bottom: 20px; border-bottom: 1px solid var(--hair); }
 .coords > div:last-child { border-bottom: none; }
 .coords dt {
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--ink-mute); margin-bottom: 9px;
 }
 .coords dd {
-  font-family: 'Bodoni Moda', serif;
-  font-variation-settings: "opsz" 32;
+  font-family: 'Manrope', system-ui, sans-serif;
   font-size: 20px; line-height: 1.5; color: var(--ink);
 }
 .coords dd a { border-bottom: 1px solid var(--hair); }
@@ -464,7 +461,7 @@ a { color: inherit; text-decoration: none; }
   padding-top: 24px;
   border-top: 1px solid var(--hair);
   display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
-  font-family: 'Jost', sans-serif;
+  font-family: 'GeistMono', ui-monospace, SFMono-Regular, monospace;
   /* Sentence case: the right-hand cell is a full sentence, and caps
      slow a sentence down measurably. */
   font-size: 13px; letter-spacing: 0.04em;
