@@ -1,0 +1,199 @@
+---
+// TEMPORARY route for choosing a type direction. Not linked from the site,
+// carries noindex, and gets deleted once a pairing is picked.
+import '../styles/fonts.css';
+import MaterialDefs from '../components/MaterialDefs.astro';
+import Crest from '../components/Crest.astro';
+
+const pairings = [
+  {
+    id: 'a',
+    name: 'A — Nasleđe iznova',
+    display: "'InstrumentSerif', Georgia, serif",
+    displayStyle: 'italic',
+    displayWeight: '400',
+    displayTracking: '-0.02em',
+    text: "'Manrope', system-ui, sans-serif",
+    label: "'JetBrainsMono', ui-monospace, monospace",
+    fonts: 'Instrument Serif · Manrope · JetBrains Mono',
+    note: 'Moderan serif visokog kontrasta uz čist grotesk. Ostaje u skladu sa mermerom i grbom, ali zvuči savremeno umesto muzejski. Najmanji rizik.',
+  },
+  {
+    id: 'b',
+    name: 'B — Švajcarski brutal-luks',
+    display: "'BricolageGrotesque', system-ui, sans-serif",
+    displayStyle: 'normal',
+    displayWeight: '800',
+    displayTracking: '-0.045em',
+    text: "'Manrope', system-ui, sans-serif",
+    label: "'GeistMono', ui-monospace, monospace",
+    fonts: 'Bricolage Grotesque · Manrope · Geist Mono',
+    note: 'Bez serifa, krupno, samouvereno. Najsavremenije i najhrabrije. Ovde se najbolje vidi da li se grb bije sa tipografijom.',
+  },
+  {
+    id: 'c',
+    name: 'C — Tech-luks',
+    display: "'Geist', system-ui, sans-serif",
+    displayStyle: 'normal',
+    displayWeight: '600',
+    displayTracking: '-0.035em',
+    text: "'Geist', system-ui, sans-serif",
+    label: "'GeistMono', ui-monospace, monospace",
+    fonts: 'Geist · Geist · Geist Mono',
+    note: 'Precizno, neutralno, vrlo 2025. Rizik: može da odzvanja kao startup umesto kao advokat.',
+  },
+];
+---
+<!doctype html>
+<html lang="sr-Latn-RS">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Uzorci tipografije — izbor pravca</title>
+    <style>
+      :root {
+        --ground: #EAE3D5; --stone: #DED5C4; --tile: #F3EEE3;
+        --ink: #2A241B; --ink-2: #4A4238; --ink-mute: #6A5F4C;
+        --bronze: #6E5220; --bronze-deep: #5E451A;
+        --hair: rgba(110,82,32,0.22); --hair-strong: rgba(110,82,32,0.42);
+        --bronze-ramp: linear-gradient(135deg,#4A3714 0%,#6E5220 16%,#8A6A26 32%,#A07F3A 46%,#7A5C24 62%,#5A431A 80%,#6E5220 100%);
+        color-scheme: light;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--ground); color: var(--ink); font-family: 'Manrope', system-ui, sans-serif; }
+
+      .guide {
+        max-width: 1180px; margin: 0 auto; padding: 56px 24px 24px;
+      }
+      .guide h1 {
+        font-family: 'Manrope', sans-serif; font-weight: 700;
+        font-size: 30px; letter-spacing: -0.02em; margin-bottom: 12px;
+      }
+      .guide p { color: var(--ink-2); max-width: 62ch; line-height: 1.7; font-size: 16px; }
+      .guide .warn {
+        margin-top: 20px; padding: 14px 18px;
+        border: 1px dashed var(--hair-strong); background: rgba(110,82,32,0.05);
+        font-size: 14px; line-height: 1.6; color: var(--bronze); max-width: 62ch;
+      }
+
+      .block { max-width: 1180px; margin: 0 auto; padding: 40px 24px 72px; }
+      .block + .block { border-top: 1px solid var(--hair); }
+      .tag {
+        display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;
+        margin-bottom: 8px;
+      }
+      .tag h2 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
+      .tag .fonts {
+        font-family: 'JetBrainsMono', monospace; font-size: 12px;
+        color: var(--bronze); letter-spacing: 0.02em;
+      }
+      .note { color: var(--ink-2); font-size: 15px; line-height: 1.65; max-width: 70ch; margin-bottom: 26px; }
+
+      .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+      @media (max-width: 900px) { .pair { grid-template-columns: 1fr; } }
+
+      .variant { position: relative; }
+      .variant .cap {
+        font-family: 'JetBrainsMono', monospace; font-size: 11px;
+        letter-spacing: 0.1em; color: var(--ink-mute); margin-bottom: 8px;
+      }
+
+      /* Sample surfaces — same materials as the site */
+      .plaque {
+        position: relative; overflow: hidden;
+        background: #F2ECE1; border: 1px solid var(--hair-strong);
+        box-shadow: inset 0 0 0 8px rgba(201,162,39,0.10), inset 0 0 0 9px rgba(110,82,32,0.16);
+        padding: 40px 28px 32px; text-align: center;
+      }
+      .wordmark { line-height: 1.02; margin-bottom: 14px; }
+      .wordmark span {
+        background: var(--bronze-ramp);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .sub { font-size: 17px; line-height: 1.45; color: var(--ink-2); max-width: 30ch; margin: 0 auto 22px; }
+      .strip {
+        display: flex; justify-content: center; gap: 26px; flex-wrap: wrap;
+        padding-top: 18px; border-top: 1px solid var(--hair);
+      }
+      .strip div { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); }
+      .strip b { display: block; margin-top: 6px; font-size: 14px; letter-spacing: 0.06em; color: var(--bronze); text-transform: none; }
+
+      .tile {
+        background: var(--tile); border: 1px solid var(--hair-strong);
+        padding: 26px 22px 22px; margin-top: 16px;
+      }
+      .tile .num { font-size: 24px; letter-spacing: 0.06em; color: var(--bronze-deep); margin-bottom: 10px; }
+      .tile h3 { font-size: 22px; line-height: 1.16; margin-bottom: 10px; }
+      .tile p { font-size: 15px; line-height: 1.68; color: var(--ink-2); margin-bottom: 14px; }
+      .tile .lex {
+        font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+        color: var(--ink-mute); padding-top: 11px; border-top: 1px solid var(--hair);
+      }
+      .crest-slot { margin: 0 auto 18px; display: block; }
+    </style>
+  </head>
+  <body>
+    <MaterialDefs />
+
+    <div class="guide">
+      <h1>Uzorci tipografije</h1>
+      <p>
+        Tri pravca, svaki prikazan sa grbom i bez njega. Materijal, boje i raspored
+        su isti kao na sajtu — menja se isključivo tipografija, da poređenje bude čisto.
+        Javi mi slovo i varijantu (npr. „B bez grba") i primenjujem na ceo sajt.
+      </p>
+      <div class="warn">
+        Fontovi su self-hostovani — sajt više ne šalje nijedan zahtev Google-u.
+        Fontshare (Satoshi, Switzer, Clash Display) je blokiran sa ove mreže,
+        pa su ovo Google Fonts alternative iz plana, sve pod Open Font License.
+      </div>
+    </div>
+
+    {pairings.map((p) => (
+      <section class="block">
+        <div class="tag">
+          <h2>{p.name}</h2>
+          <span class="fonts">{p.fonts}</span>
+        </div>
+        <p class="note">{p.note}</p>
+
+        <div class="pair">
+          {[true, false].map((withCrest) => (
+            <div class="variant">
+              <div class="cap">{withCrest ? 'sa grbom' : 'bez grba'}</div>
+
+              <div class="plaque">
+                {withCrest && <Crest initials="LS" width={56} height={68} class="crest-slot" />}
+                <div
+                  class="wordmark"
+                  style={`font-family:${p.display};font-style:${p.displayStyle};font-weight:${p.displayWeight};letter-spacing:${p.displayTracking};font-size:clamp(40px,6vw,74px);`}
+                ><span>Savković</span></div>
+                <p class="sub" style={`font-family:${p.text};`}>
+                  Advokatska kancelarija u Kruševcu
+                </p>
+                <div class="strip" style={`font-family:${p.label};`}>
+                  <div>Imenik AK<b>—</b></div>
+                  <div>Godina upisa<b>—</b></div>
+                  <div>Oblasti prakse<b>—</b></div>
+                </div>
+              </div>
+
+              <div class="tile">
+                <div class="num" style={`font-family:${p.display};font-weight:${p.displayWeight};`}>I</div>
+                <h3 style={`font-family:${p.display};font-style:${p.displayStyle};font-weight:${p.displayWeight};letter-spacing:${p.displayTracking};`}>
+                  Privredno pravo
+                </h3>
+                <p style={`font-family:${p.text};`}>
+                  Osnivanje i statusne promene privrednih društava, ugovori u privredi,
+                  privredni sporovi, likvidacija.
+                </p>
+                <div class="lex" style={`font-family:${p.label};`}>Zakon o privrednim društvima</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </body>
+</html>
